@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+		<title>工业园区地理信息平台</title>
+		<meta name="description" content="">
+		<meta name="keywords" content="index">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link href="css/layui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<script src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="https://api.tianditu.gov.cn/api?v=4.0&tk=10908abdd40599d3a3ebbc012bb3549a"></script>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	</head>
+
+	<!-- 大屏分辨率    5760 * 2160-->
+
+	<body class="layui-layout-body" style="overflow: hidden;">
+		<div id="ParticleCanvasDiv" style="position: absolute; width: 100%; height: 100%; overflow: hidden; padding: 0; margin: 0;">
+			<canvas id="ParticleCanvas" style="width:100%;height:100%;" width="1920" height="1080"></canvas>
+		</div>
+
+		<div id="topDiv" style="position: absolute; width: 100%; height: 8.5%; background-image: url(img/titledown.png); background-size: 100% 100%; background-repeat: no-repeat;">
+			<div style="position: absolute; width: 25%; height: 60%; left: 1%; top: 10%; color: white; font-size: 1.6vw; cursor: pointer;">
+				<!--<img src="../../Vendor/Asset/Logo/default.png" style="position: relative; width: 1.6vw; height: 1.6vw;top:0vw;display:inline;" onerror="this.style.display='none'">-->
+				<div style="position: relative; width: auto; height: 100%;font-size:1vw; line-height: 1.5vw; letter-spacing: 0.8vw; cursor: default;display:inline;">
+					安宁</div>
+
+			</div>
+			<div class="topbtn" style="position: absolute; width: auto; height: 30%;top:60%;left:3%;">
+				<div type="button" class="layui-btn" id="hjjc" style="height:1.5vw;line-height:1.5vw;border:none; background-image: url(img/topbtn.png); background-size: 100% 100%; background-repeat: no-repeat;">
+					麒麟园区</div>
+				<div type="button" class="layui-btn" id="aqjg" style="height:1.5vw;line-height:1.5vw;border:none; background-image: url(img/topbtn.png); background-size: 100% 100%; background-repeat: no-repeat;">
+					生物医药</div>
+				<div type="button" class="layui-btn" id="spjk" style="height:1.5vw;line-height:1.5vw;border:none; background-image: url(img/topbtn.png); background-size: 100% 100%; background-repeat: no-repeat;">
+					金融中心</div>
+
+				<!--<div type="button" class="layui-btn" id="zdyh" style="height:1.5vw;line-height:1.5vw;border:none; background-image: url(img/topbtn.png); background-size: 100% 100%; background-repeat: no-repeat;">麒麟园区图层</div>-->
+			</div>
+			<div id="topTitle" style="position: absolute; width: 28%; height: 60%; left: 36%; top: 22%; text-align: center; font-size: 1.6vw; color: rgba(0,204,255,1); letter-spacing: 0.4vw; cursor: pointer;">
+				工业园区地理信息平台
+			</div>
+			
+			<div style="position: absolute; width: 14%; height: 30%; right: 1%; top: 15%; color: white; font-size: 0.5vw;">
+				<div class="topWeather" style="left: 0%;padding-top:0.3vw;border-right: 1px solid rgba(0,228,255,0.9); cursor: pointer;">管理员
+				</div>
+				<!--onclick="javascript: window.location.href = '../../Department/index/index.html'"-->
+
+				<div class="topWeather" style="left: 33.33%;">
+					<span id="timeSpan" class="time">21:26:01</span>
+					<br>
+					<span id="dateSpan" style="font-size: 0.6vw;">2020年7月15日</span>
+				</div>
+				<!-- <div class="topWeather" style="left: 66.66%; border-right: 0; border-left: 1px solid rgba(0,228,255,0.9);">
+            <img id="weatherImg" src="../../Vendor/image/weather/多云.png" style="width: 1vw; height: 1vw; background-size: 100% 100%;">
+            <span id="weatherWord" style="font-size: 0.8vw;">多云</span>
+        </div>-->
+
+			</div>
+			<div class="topbtn" style="position: absolute; width: auto; height: 30%;top:60%;right:3%;">
+				<div type="button" class="layui-btn" id="dxjx" style="height:1.5vw;line-height:1.5vw;border:none; background-image: url(img/topbtn.png); background-size: 100% 100%; background-repeat: no-repeat;">
+					化工园区</div>
+				<div type="button" class="layui-btn" id="wdgc" style="height:1.5vw;line-height:1.5vw;border:none; background-image: url(img/topbtn.png); background-size: 100% 100%; background-repeat: no-repeat;">
+					钢铁产业</div>
+				<div type="button" class="layui-btn" id="lwsm" style="height:1.5vw;line-height:1.5vw;border:none; background-image: url(img/topbtn.png); background-size: 100% 100%; background-repeat: no-repeat;">
+					待定</div>
+
+			</div>
+
+		</div>
+
+		<div id="map" style="position: absolute; width: 98%; height: 87.5%; left: 1%; top: 10.5%;">
+			<div id="mapdiv" style="position: absolute; width: 49%; height: 65.55%; left: 25.5%; top: 0%;z-index:99999999">
+				<!-- <div id="backChinaMap" style="position: absolute; width: 50px; height: 50px; left: 25%; bottom: 0px; background-color: rgba(255, 255, 255, 0.1); color: white; border-radius: 50px; font-size: 1vw; text-align: center; z-index: 200; line-height: 50px; cursor: pointer;">返回</div>
+        <div id="backMap" style="position: absolute; width: 50px; height: 50px; left: 25%; bottom: 0px; background-color: rgba(255, 255, 255, 0.1); color: white; border-radius: 50px; font-size: 1vw; text-align: center; z-index: 200; display: none; line-height: 50px; cursor: pointer;">返回</div> -->
+
+				<!--     <form class="layui-form">
+            <div id="proSelect" style="position: absolute; width: auto; height: 50px; right: 38%; top: 20%; z-index: 1000;">
+                <select lay-search="" lay-filter="selectProject" id="proSel" style="width:290px">
+                    <option value="000004">疏港大道北侧地块二项目（2019-5）二标段</option>
+                    <option value="000005">疏港大道北侧地块二项目（2019-5)一标段</option>
+                </select>
+                <div class="layui-form-select">
+                    <div class="layui-select-title">
+                        <input type="text" placeholder="请选择" value="疏港大道北侧地块二项目（2019-5）二标段" class="layui-input">
+                        <i class="layui-edge"></i>
+                    </div>
+                    <dl class="layui-anim layui-anim-upbit">
+                        <dd lay-value="000004" class="layui-this">疏港大道北侧地块二项目（2019-5）二标段</dd>
+                        <dd lay-value="000005" class="">疏港大道北侧地块二项目（2019-5)一标段</dd>
+                    </dl>
+                </div>
+                <script>layui.use('form', function(){var form = layui.form;form.on('select(selectProject)', function(data){selectProject(data.value);});});</script></div>
+        </form>-->
+
+				<div id="echartmap" class="echartDiv" style="width: 100%; height: 100%; left: 0px; top: 10%; -webkit-tap-highlight-color: transparent; user-select: none;"
+				 _echarts_instance_="ec_1594817780118">
+					<!-- <div id="map" style="position: relative; overflow: hidden; width: 922px; height: 737px; padding: 0px; margin: 0px; border-width: 0px; cursor: pointer;">
+                <canvas data-zr-dom-id="zr_0" width="922" height="537" style="position: absolute; left: 0px; top: 0px; width: 922px; height: 537px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;">
+                </canvas>
+            </div>-->
+					<div style="position: absolute; display: none; border-style: solid; white-space: nowrap; z-index: 9999999; transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s, top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s; background-color: rgba(50, 50, 50, 0.7); border-width: 0px; border-color: rgb(51, 51, 51); border-radius: 4px; color: rgb(255, 255, 255); font: 14px / 21px &quot;Microsoft YaHei&quot;; padding: 5px; left: 338px; top: 157px;">
+						沛县
+					</div>
+				</div>
+				<div id="echart_mapEffect" class="echartDiv" style="width: 100%; height: 100%; left: 0px; top: 200%; -webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0);"
+				 _echarts_instance_="1594817780137">
+					<div style="position: relative; overflow: hidden; width: 922px; height: 537px;">
+						<div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 922px; height: 537px; user-select: none;">
+						</div><canvas width="922" height="537" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 922px; height: 537px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas
+						 width="922" height="537" data-zr-dom-id="1" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 922px; height: 537px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas
+						 width="922" height="537" data-zr-dom-id="10" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 922px; height: 537px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas
+						 width="922" height="537" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 922px; height: 537px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
+					</div>
+				</div>
+				<div id="provinceName" class="echartDiv" style="width:100%;height:100%;left: 13%; top: 203%;background-size:73% 95%;background-image:url(img/dituwenzi.png);background-repeat:no-repeat;pointer-events:none;z-index:500;">
+				</div>
+				<div id="mapTop" style="position: absolute; width: 100%; height: 18%; z-index: 100;">
+					<div class="mapTopInfo" style="left: 0%;" id="xmxx">
+						<!--onclick="javascript: window.location.href = '../../Department/index/index.html'"-->
+						<!--<div class="mapTopTitle" style="display: table;">
+                    <span style="display: table-cell; vertical-align: middle; font-size: 0.5vw; color: #C2CEDE;">较昨日 <span style="color: #fe5eff;">+ 0↑</span>
+                    </span>
+
+                </div>-->
+
+						<!-- 生物医药 NO -->
+						<!--<div id="xmzsCnt" class="mapTopField" style="color: #fe5eff; background: linear-gradient(90deg,rgba(8,51,102,0.3) 0%,rgba(254,94,255,0.3) 50%,rgba(8,51,102,0.3) 100%);">安宁市生物医药（1000）个</div>-->
+
+
+						<!--<div class="mapTopTitle" style="top: 66.6%">
+                    项目总数(个)
+                </div>-->
+					</div>
+				</div>
+
+				<!--<div id="mapProvInfo" class="modelInfoMap" style="left: 0px; height: 80%;">
+            <div id="mapProvHide" style="position: absolute; width: 100%; height: 30px; bottom: 0px; background-color: rgba(255,255,255,0.2); border-radius: 15px; z-index: 100; text-align: center; font-size: 20px; font-weight: bold; line-height: 28px; color: rgba(255,255,255,0.7);">↕</div>
+            <div class="contentTopCssMap">
+                <div class="contentListCss" style="width: 26%; left: 1%;">街道</div>
+                <div class="contentListCss" style="width: 19%; left: 28%;">项目数</div>
+                <div class="contentListCss" style="width: 25%; left: 48%;">面积</div>
+                <div class="contentListCss" style="width: 26%; left: 74%;">造价</div>
+            </div>
+            <div id="mapProvScrollDiv" class="contentFieldCssMap">
+                    <div class="contentFieldLineMap" onclick="javascript:window.location.href = '/Map/Index/320000-320300-320305.html'">
+
+                        <div class="contentListCss" style="width: 26%; left: 1%;" title="贾汪区">连然</div>
+                        <div class="contentListCss" style="width: 19%; left: 28%;" title="2">2</div>
+                        <div class="contentListCss" style="width: 25%; left: 48%;" title="19.06">19.06</div>
+                        <div class="contentListCss" style="width: 26%; left: 74%;" title="30,990.68">30,990.68</div>
+                    </div>
+                    <div class="contentFieldLineMap" style="height: 40px;">
+                        <div class="contentListCss" style="width: 26%; left: 1%;"></div>
+                        <div class="contentListCss" style="width: 19%; left: 28%;"></div>
+                        <div class="contentListCss" style="width: 25%; left: 48%;"></div>
+                        <div class="contentListCss" style="width: 26%; left: 74%;"></div>
+                    </div>
+
+            </div>
+        </div>-->
+				<!--<div id="mapCityInfo" class="modelInfoMap" style="width: 30%; right: 0;">
+            <div id="mapCityHide" style="position: absolute; width: 100%; height: 30px; bottom: 0px; background-color: rgba(255,255,255,0.2); border-radius: 15px; z-index: 100; text-align: center; font-size: 20px; font-weight: bold; line-height: 28px; color: rgba(255,255,255,0.7);">↕</div>
+            <div class="contentTopCssMap">
+                <div class="contentListCss" style="width: 30%; left: 1%;">施工单位</div>
+                <div class="contentListCss" style="width: 17%; left: 32%;">项目数</div>
+                <div class="contentListCss" style="width: 23%; left: 50%;">面积</div>
+                <div class="contentListCss" style="width: 26%; left: 74%;">造价</div>
+            </div>
+            <div id="mapCityScrollDiv" class="contentFieldCssMap">
+                    <div class="contentFieldLineMap" style="height: 40px;">
+                        <div class="contentListCss" style="width: 30%; left: 1%;"></div>
+                        <div class="contentListCss" style="width: 17%; left: 32%;"></div>
+                        <div class="contentListCss" style="width: 23%; left: 50%;"></div>
+                        <div class="contentListCss" style="width: 26%; left: 74%;"></div>
+                    </div>
+
+            </div>
+        </div>-->
+			</div>
+
+			<div class="modelDiv wdgc " style="height: 32%; right: 0%; top: 33.33%;z-index:9999999">
+				<div class="modelTitle" onclick="javascript: window.open('')">钢铁产业</div>
+
+				<div id="wdgcInfo1" class="modelInfoEcts" style="margin-top: 2000px;">
+					<div id="wdgcTurnBtnE" class="modelTurnBtn" style="right: 0;">
+						<img src="img/list.png" />
+					</div>
+					<div id="echart1_main" class="echartDiv">
+					</div>
+				</div>
+				<div id="wdgcInfo2" class="modelInfo">
+					<div id="wdgcTurnBtn" class="modelTurnBtn">
+						<img src="img/tongji.png" />
+					</div>
+
+					<!-- <div class="layui-tab-item layui-show">
+                    <div class="layui-tab-item-title">
+                        <div class="layui-tab-item-title-model width_2" style="color: #00E4FF;">企业名称</div>
+
+                        <div class="layui-tab-item-title-model width_2" style="color: #bc3e04;">详细地址</div>
+
+                    </div>
+                    <div class="layui-tab-item-info">
+                        <div class="layui-collapse yingji_list">
+                            <div class="layui-colla-item">
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                </div> -->
+
+				</div>
+			</div>
+
+			<div class="modelDiv dxjx " style="right: 0%; top: 0%;z-index:9999999">
+				<!--  -->
+				<div class="modelTitle" onclick="javascript: window.open('')">化工园区</div>
+				<div class="modelMenu" style="width: calc(92% - 7vw);">
+					<!-- onclick="javascript:openwin('/EquManageSJ/Index/index.html')" -->
+					<!-- <div class="modelMenuDiv" style="left: 0%;" >
+                今日运行  &nbsp;<p style="width: 100%; color: #00c8e7; font-size: 0.7vw; line-height: 2vw; font-weight: 500; display: inline;">2</p>
+            </div>-->
+					<!-- onclick="javascript:window.location.href = '/DangerPro/Index/index.html'" -->
+					<!--<div class="modelMenuDiv" style="left: 50%;" >
+                今日预警  &nbsp;<p style="width: 100%; color: rgba(255,237,39,1); font-size: 0.7vw; line-height: 2vw; font-weight: 500; display: inline;">0</p>
+            </div>-->
+				</div>
+				<div class="modelInfo" style="">
+					<!-- <div class="layui-tab-item  layui-show">
+                    <div class="layui-tab-item-title">
+                        <div class="layui-tab-item-title-model width_4" style="color: #00E4FF;"></div>
+                        <div class="layui-tab-item-title-model width_7" style="color: #00E4FF;">SO2</div>
+                        <div class="layui-tab-item-title-model width_7" style="color: #d852b4;">CO2</div>
+                        <div class="layui-tab-item-title-model width_7" style="color: #00c8e7;">03-8H</div>
+                        <div class="layui-tab-item-title-model width_7" style="color: rgba(255,237,39,1);">PM10</div>
+                        <div class="layui-tab-item-title-model width_7" style="color: #e29834;">PM2.5</div>
+                    </div>
+                    <div class="layui-tab-item-info">
+                        <div class="layui-collapse">
+                            <div class="layui-colla-item" id="ecological">
+                                
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                </div> -->
+				</div>
+			</div>
+
+			<div class="modelDiv lwsm" style="right: 0%; top: 66.66%;z-index:9999999">
+				<div class="modelTitle" onclick="javascript: window.open('')">待定</div>
+
+				<div id="ygsmInfo2" class="modelInfo">
+					<div id="ygsmTurnBtn" class="modelTurnBtn">
+						<img src="img/tongji.png" />
+					</div>
+
+				</div>
+			</div>
+
+			<div class="modelDiv" style="left: 0%; top: 0; height: 99%; border-left: none; border-right: none; border-top: none; box-sizing: border-box; background-color: none; display: none">
+
+				<div class="layui-tab" style="margin: 0; height: 100%;">
+					<ul class="layui-tab-title" style="text-align: center; border-color: #041F3E;">
+						<li class="layui-this" style="color: #B6C2D3;">项目概况</li>
+
+						<li class="" style="color: #B6C2D3;">大型设备</li>
+						<li class="" style="color: #B6C2D3;">员工实名</li>
+					</ul>
+					<div class="layui-tab-content" style="border: 1px solid rgba(0,204,255,0.3); height: calc(100% - 40px); border-top: none; box-sizing: border-box;">
+						<div class="layui-tab-item layui-show">
+							<div class="layui-tab-item-title">
+								<div class="layui-tab-item-title-model" style="color: #00E4FF;">区县</div>
+								<div class="layui-tab-item-title-model" style="color: #FFED27">今日新增</div>
+								<div class="layui-tab-item-title-model" style="color: #FD7F57;">项目总数</div>
+								<div class="layui-tab-item-title-model" style="color: #FDA444;">建筑面积</div>
+								<div class="layui-tab-item-title-model" style="color: #8EFF82;">建筑造价</div>
+							</div>
+							<div class="layui-tab-item-info">
+							</div>
+						</div>
+
+
+						<div class="layui-tab-item">
+							<div class="layui-tab-item-title">
+								<div class="layui-tab-item-title-model" style="color: #00E4FF; width: 14.28%;">区县</div>
+								<div class="layui-tab-item-title-model" style="color: #FFED27; width: 14.28%;">总数</div>
+								<div class="layui-tab-item-title-model" style="color: #FD7F57; width: 14.28%;">今日运行</div>
+								<div class="layui-tab-item-title-model" style="color: #FDA444; width: 14.28%;">今日预警</div>
+								<div class="layui-tab-item-title-model" style="color: #8EFF82; width: 14.28%;">待检</div>
+								<div class="layui-tab-item-title-model" style="color: #8EFF82; width: 14.28%;">安装</div>
+								<div class="layui-tab-item-title-model" style="color: #8EFF82; width: 14.28%;">拆卸</div>
+							</div>
+							<div class="layui-tab-item-info">
+							</div>
+						</div>
+						<div class="layui-tab-item">
+							<div class="layui-tab-item-title">
+								<div class="layui-tab-item-title-model" style="color: #00E4FF; width: 16.66%;">区县</div>
+								<div class="layui-tab-item-title-model" style="color: #FFED27; width: 16.66%;">人员总数</div>
+								<div class="layui-tab-item-title-model" style="color: #FD7F57; width: 16.66%;">考勤总数</div>
+								<div class="layui-tab-item-title-model" style="color: #FDA444; width: 16.66%;">当日考勤</div>
+								<div class="layui-tab-item-title-model" style="color: #8EFF82; width: 16.66%;">当日进场</div>
+								<div class="layui-tab-item-title-model" style="color: #8EFF82; width: 16.66%;">当日退场</div>
+							</div>
+							<div class="layui-tab-item-info">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modelDiv" style="right: 0%; top: 0; height: 99%; border-left: none; border-right: none; border-top: none; box-sizing: border-box; background-color: none; display: none;">
+
+				<div class="layui-tab" style="margin: 0; height: 100%;">
+					<ul class="layui-tab-title" style="text-align: center; border-color: #041F3E;">
+						<li class="layui-this" style="color: #B6C2D3;">环境监测</li>
+
+						<li class="" style="color: #B6C2D3;">安全监控</li>
+						<li class="" style="color: #B6C2D3;">视频监控</li>
+					</ul>
+					<div class="layui-tab-content" style="border: 1px solid rgba(0,204,255,0.3); height: calc(100% - 40px); border-top: none; box-sizing: border-box;">
+						<div class="layui-tab-item layui-show">
+							<div class="layui-tab-item-title">
+								<div class="layui-tab-item-title-model" style="color: #00E4FF; width: 16.66%;">区县</div>
+								<div class="layui-tab-item-title-model" style="color: #FFED27; width: 16.66%;">监管数量</div>
+								<div class="layui-tab-item-title-model" style="color: #FD7F57; width: 16.66%;">今日运行</div>
+								<div class="layui-tab-item-title-model" style="color: #FDA444; width: 16.66%;">今日预警</div>
+								<div class="layui-tab-item-title-model" style="color: #8EFF82; width: 16.66%;">履责数量</div>
+								<div class="layui-tab-item-title-model" style="color: #8EFF82; width: 16.66%;">今日新增</div>
+							</div>
+							<div class="layui-tab-item-info">
+								<div class="layui-collapse">
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="modelDiv zdyh" style="width: 24%; left: 25.5%; top: 66.66%;display:none">
+				<!--  -->
+				<div class="modelTitle" onclick="javascript: window.location.href = '../../Index/HjjcSystem/index.html'">
+					重大隐患</div>
+				<div class="modelMenu" style="width: calc(92% - 7.5vw);">
+					<!-- onclick="javascript:openwin('/DangerSource/Index/index.html')" -->
+					<div class="modelMenuDiv" style="left: 0%;width:33.33%">
+						一级
+						<p style="width: 100%; color: rgba(0,228,255,0.9); font-size: 0.7vw; line-height: 2vw; font-weight: 500; display: inline;">
+							0</p>
+					</div>
+					<!-- onclick="javascript:openwin('/DangerSource/Index/index.html')" -->
+					<div class="modelMenuDiv" style="width: 33.33%; left: 33.33%;">
+						二级
+						<p style="width: 100%; color: rgba(255,223,45,0.9); font-size: 0.7vw; line-height: 2vw; font-weight: 500; display: inline;">
+							0</p>
+					</div>
+					<!-- onclick="javascript:openwin('/DangerSource/Index/index.html')" -->
+					<div class="modelMenuDiv" style="width: 33.33%; left: 66.66%;">
+						三级
+						<p style="width: 100%; color: rgba(0,228,255,0.9); font-size: 0.7vw; line-height: 2vw; font-weight: 500; display: inline;">
+							0</p>
+					</div>
+				</div>
+				<div id="dyInfo1" class="modelInfoEcts" style="margin-top: 2000px;">
+					<div id="ycglTurnBtnE" class="modelTurnBtn" style="right: 0;">
+						<img src="img/list.png" />
+					</div>
+					<div id="echart4_main" class="echartDiv">
+					</div>
+				</div>
+				<div id="dyInfo2" class="modelInfo" style="">
+					<div id="ycglTurnBtn" class="modelTurnBtn">
+						<img src="img/tongji.png" />
+					</div>
+
+					<div class="layui-tab-item  layui-show">
+						<div class="layui-tab-item-title">
+							<div class="layui-tab-item-title-model width_5" style="color: #00E4FF;">县市区</div>
+							<div class="layui-tab-item-title-model width_5" style="color: #FFED27;">隐患总数</div>
+							<div class="layui-tab-item-title-model width_5" style="color: #FD7F57;">一级</div>
+							<div class="layui-tab-item-title-model width_5" style="color: #FDA444;">二级</div>
+							<div class="layui-tab-item-title-model width_5" style="color: #FDA444;">三级</div>
+						</div>
+						<div class="layui-tab-item-info">
+							<div class="layui-collapse">
+								<div class="layui-colla-item">
+									<h2 class="layui-colla-title">
+										<span style="" class="layui-tab-item-title-model width_5">贾汪区</span>
+										<span style="" class="layui-tab-item-title-model width_5">0</span>
+										<span style="" class="layui-tab-item-title-model width_5">0</span>
+										<span style="" class="layui-tab-item-title-model width_5">0</span>
+										<span style="" class="layui-tab-item-title-model width_5">0</span>
+										<!--<i class="layui-icon layui-colla-icon"></i>-->
+									</h2>
+									<div class="layui-colla-content">
+										<div id="zdyh/000005" ondblclick="showdetail(this)">
+											<div style="color:#CDD5DD;cursor:pointer;" title="疏港大道北侧地块二项目（2019-5)一标段" class="layui-tab-item-title-model width_5 truncate">疏港大道北侧地块二项目（2019-5)一标段
+											</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+										</div>
+										<div id="zdyh/000004" ondblclick="showdetail(this)">
+											<div style="color:#CDD5DD;cursor:pointer;" title="疏港大道北侧地块二项目（2019-5）二标段" class="layui-tab-item-title-model width_5 truncate">疏港大道北侧地块二项目（2019-5）二标段
+											</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+
+			<div class="modelDiv spjk" style="width: 24%; left: 50.5%; top: 66.66%;display:none">
+				<div class="modelTitle" onclick="javascript: window.location.href = '../../Index/LzdkSystem/index.html'">
+					视频监控</div>
+
+				<div class="modelMenu" style="width: calc(92% - 6vw);">
+					<div class="modelMenuDiv" style="left: 0%; width: 33.33%">
+						监控总数
+						<p style="width: 100%; color: rgba(0,228,255,0.9); font-size: 0.5vw; line-height: 2vw; font-weight: 500; display: inline;">
+							0</p>
+					</div>
+					<div class="modelMenuDiv" style="width: 33.33%; left: 33.33%;">
+						吊钩监控
+						<p style="width: 100%; color: rgba(255,223,45,0.9); font-size: 0.5vw; line-height: 2vw; font-weight: 500; display: inline;">
+							0</p>
+					</div>
+					<div class="modelMenuDiv" style="width: 33.33%; left: 66.66%;">
+						普通监控
+						<p style="width: 100%; color: rgba(0,228,255,0.9); font-size: 0.5vw; line-height: 2vw; font-weight: 500; display: inline;">
+							0</p>
+					</div>
+				</div>
+				<div id="jkInfo2" class="modelInfo">
+					<div class="layui-tab-item  layui-show">
+						<div class="layui-tab-item-title">
+							<div class="layui-tab-item-title-model width_5" style="color: #00E4FF;">县市区</div>
+							<div class="layui-tab-item-title-model width_5" style="color: #FFED27;">今日新增</div>
+							<div class="layui-tab-item-title-model width_5" style="color: #FD7F57;">监控数量</div>
+							<div class="layui-tab-item-title-model width_5" style="color: #FDA444;">吊钩数量</div>
+							<div class="layui-tab-item-title-model width_5" style="color: #FDA444;">普通监控</div>
+						</div>
+						<div class="layui-tab-item-info">
+							<div class="layui-collapse">
+								<div class="layui-colla-item">
+									<h2 class="layui-colla-title">
+										<span style="" class="layui-tab-item-title-model width_5">贾汪区</span>
+										<span style="" class="layui-tab-item-title-model width_5">0</span>
+										<span style="" class="layui-tab-item-title-model width_5">0</span>
+										<span style="" class="layui-tab-item-title-model width_5">0</span>
+										<span style="" class="layui-tab-item-title-model width_5">0</span>
+
+									</h2>
+									<div class="layui-colla-content">
+										<div id="sp/000005" ondblclick="showdetail(this)">
+											<div style="color:#CDD5DD;cursor:pointer;" title="疏港大道北侧地块二项目（2019-5)一标段" class="layui-tab-item-title-model width_5 truncate">疏港大道北侧地块二项目（2019-5)一标段
+											</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+										</div>
+										<div id="sp/000004" ondblclick="showdetail(this)">
+											<div style="color:#CDD5DD;cursor:pointer;" title="疏港大道北侧地块二项目（2019-5）二标段" class="layui-tab-item-title-model width_5 truncate">疏港大道北侧地块二项目（2019-5）二标段
+											</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+											<div style="color: #CDD5DD;" class="layui-tab-item-title-model width_5">0</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+
+			<div class="modelDiv spjk" style="height: 32%; left: 0%; top:66.66%;z-index:9999999">
+				<div class="modelTitle" onclick="javascript: window.open('')">金融中心</div>
+				<!-- <div class="ly-flex-right right-left">
+                <div>
+                    <div class="number case_shouli" style="top:38px" id="spaceArea">13811</div>
+                    <img src="../../img/garden_gren_space.png" />
+                    <h5>绿地面积（km²）</h5>
+                </div>
+                <div>
+                    <div class="number case_filing_number" style="top:38px" id="perPark">31</div>
+                    <img src="../../img/garden_ladspace.png" />
+                    <h5>人均公园面积（m²）</h5>
+                </div>
+                <div>
+                    <div class="number" style="top:38px" id="ordTreeCount">214</div>
+                    <img src="../../img/garden_treen.png" />
+                    <h5>古树名木数量</h5>
+                </div>
+            </div> -->
+				<!-- <div class="greenbelt">
+                <div>
+                    <div class="span fugai">绿地覆盖率
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span id="greenbeltPro">37%</span>
+                    </div>
+                </div>
+                <div>
+
+                    <div class="span guihua">绿 地 规 划
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span id="greenbeltPlanArea">37502km²</span>
+                    </div>
+                </div>
+            </div> -->
+				<!--<div class="modelMenu">
+            <div style="position: absolute; width: 100%; height: 80%; top: 10%; text-align: right; line-height: 1.8vw; color: #00ccff" onclick="javascript: window.location.href = ''Index/GwyjSystem/index.html'">
+                更多&gt;&gt;
+            </div>
+        </div>
+        <div class="modelInfo" style="">            
+            <div id="tzyjContentScrollDiv" class="contentFieldCss" style="height: 100%; top: 0%;">
+            <img src="img/notdata.png" />                    
+
+            </div>
+        </div>-->
+			</div>
+
+			<div class="modelDiv  aqjg" style="left: 0%; top: 33.33%;z-index:9999999">
+				<div class="modelTitle" onclick="javascript: window.open('')">生物医药</div>
+				<!-- <div class="modelMenu" style="width: calc(92% - 7.5vw);">
+            <div class="modelMenuDiv" style="left: 10%;">
+                运行总数  &nbsp;<p style="width: 100%; color: rgba(0,228,255,0.9); font-size: 0.7vw; line-height: 2vw; font-weight: 500; display: inline;">0</p>
+            </div>
+            <div class="modelMenuDiv" style="width: 40%; left: 50%;">
+                今日预警  &nbsp;<p style="width: 100%; color: rgba(255,223,45,0.9); font-size: 0.7vw; line-height: 2vw; font-weight: 500; display: inline;">0</p>
+            </div>
+        </div>-->
+
+				<div id="hjjcInfo2" class="modelInfo" style="">
+					<div id="bqchTurnBtn" class="modelTurnBtn">
+						<img src="img/list.png" />
+					</div>
+					<!-- <div class="layui-tab-item  layui-show">
+                    <div class="layui-tab-item-title">
+                        <div class="layui-tab-item-title-model width_4" style="color: #00E4FF;">设备名称</div>
+                        <div class="layui-tab-item-title-model width_4" style="color: #FDA444;">监测点名称</div>
+                        <div class="layui-tab-item-title-model width_4" style="color: #FD7F57;">监测点位置</div>
+                        <div class="layui-tab-item-title-model width_4" style="color: #FD7F57;">安装时间</div>
+                    </div>
+                    <div class="layui-tab-item-info">
+                        <div class="layui-collapse" id="camera_list">
+                            
+
+                        </div>
+                    </div>
+                </div> -->
+				</div>
+			</div>
+			<div class="modelDiv hjjc modelDivsel" style="left: 0%; top: 0%;z-index:9999999">
+				<!-- <div class="modelTitle" onclick="javascript: window.location.href = '../../Index/LzdkSystem/index.html'">麒麟园区</div>-->
+				<div class="modelTitle" onclick="javascript: window.open('../../../examples/demo1.html')">麒麟园区
+				</div>
+				<!--<div class="modelMenu" style="width: calc(92% - 6vw);">
+            <div class="modelMenuDiv" style="left: 0%;width:33.33%">
+                检查总数 
+                <p style="width: 100%; color: rgba(0,228,255,0.9); font-size: 0.5vw; line-height: 2vw; font-weight: 500; display: inline;">0</p>
+            </div>
+            <div class="modelMenuDiv" style="width: 33.33%; left: 33.33%;" >
+                整改总数 
+                <p style="width: 100%; color: rgba(255,223,45,0.9); font-size: 0.5vw; line-height: 2vw; font-weight: 500; display: inline;">0</p>
+            </div>
+            <div class="modelMenuDiv" style="width: 33.33%; left: 66.66%;" >
+                未整改 
+                <p style="width: 100%; color: rgba(0,228,255,0.9); font-size: 0.5vw; line-height: 2vw; font-weight: 500; display: inline;">0</p>
+            </div>
+        </div>-->
+
+				<!-- <div class="ly-flex">
+                <div>
+                    <div class="number case_accept_number accept_number">135</div>
+                    <img src="../../img/urban_case.png" />
+                    <h5 class="case_shouli">案件受理</h5>
+                </div>
+                <div>
+                    <div class="number case_filing_number filing_number">128</div>
+                    <img src="../../img/urban_failng.png" />
+                    <h5 class="case_filing_number">立案</h5>
+                </div>
+                <div>
+                    <div class="number case_closed_number closed_number">87</div>
+                    <img src="../../img/urban_case_close.png" />
+                    <h5 class="case_closed_number">结案</h5>
+                </div>
+            </div> -->
+
+				<!--<div id="aqjgInfo2" class="modelInfo">
+            <div class="layui-tab-item  layui-show">
+                <div class="layui-tab-item-title">
+                    <div class="layui-tab-item-title-model width_6" style="color: #00E4FF;">县市区</div>
+                    <div class="layui-tab-item-title-model width_6" style="color: #FFED27;">新增监测</div>
+                    <div class="layui-tab-item-title-model width_6" style="color: #FD7F57;">新增整改</div>
+                    <div class="layui-tab-item-title-model width_6" style="color: #FDA444;">累计检查</div>
+                    <div class="layui-tab-item-title-model width_6" style="color: #FDA444;">累计整改</div>
+                    <div class="layui-tab-item-title-model width_6" style="color: #FDA444;">未整改</div>
+                </div>
+                <div class="layui-tab-item-info">
+                    <div class="layui-collapse">
+                            <div class="layui-colla-item">
+                                <h2 class="layui-colla-title">
+                                    <span style="" class="layui-tab-item-title-model width_6">贾汪区</span>
+                                    <span style="" class="layui-tab-item-title-model width_6">0</span>
+                                    <span style="" class="layui-tab-item-title-model width_6">0</span>
+                                    <span style="" class="layui-tab-item-title-model width_6">11</span>
+                                    <span style="" class="layui-tab-item-title-model width_6">0</span>
+                                    <span style="" class="layui-tab-item-title-model width_6">6</span>
+                                </h2>
+                                <div class="layui-colla-content">
+                                        <div id="aqjg/000005" ondblclick="showdetail(this)">
+                                            <div style="color:#CDD5DD;cursor:pointer;" title="疏港大道北侧地块二项目（2019-5)一标段" class="layui-tab-item-title-model width_6  truncate">疏港大道北侧地块二项目（2019-5)一标段</div>
+                                            <div style="color: #CDD5DD;" class="layui-tab-item-title-model width_6">0</div>
+                                            <div style="color: #CDD5DD;" class="layui-tab-item-title-model width_6">0</div>
+                                            <div style="color: #CDD5DD;" class="layui-tab-item-title-model width_6">0</div>
+                                            <div style="color: #CDD5DD;" class="layui-tab-item-title-model width_6">0</div>
+                                            <div style="color: #CDD5DD;" class="layui-tab-item-title-model width_6">0</div>
+                                        </div>
+                                        <div id="aqjg/000004" ondblclick="showdetail(this)">
+                                            <div style="color:#CDD5DD;cursor:pointer;" title="疏港大道北侧地块二项目（2019-5）二标段" class="layui-tab-item-title-model width_6  truncate">疏港大道北侧地块二项目（2019-5）二标段</div>
+                                            <div style="color: #CDD5DD;" class="layui-tab-item-title-model width_6">0</div>
+                                            <div style="color: #CDD5DD;" class="layui-tab-item-title-model width_6">0</div>
+                                            <div style="color: #CDD5DD;" class="layui-tab-item-title-model width_6">0</div>
+                                            <div style="color: #CDD5DD;" class="layui-tab-item-title-model width_6">0</div>
+                                            <div style="color: #CDD5DD;" class="layui-tab-item-title-model width_6">0</div>
+                                        </div>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>-->
+			</div>
+
+		</div>
+		<script type="text/javascript">
+				"use strict";
+				var windowFar = window.innerWidth / 1920;
+				var canvas = document.getElementById('ParticleCanvas'),
+					ctx = canvas.getContext('2d'),
+					canvasW = 1920,
+					canvasH = 1080,
+					hue = 217,
+					stars = [],
+					count = 0,
+					maxStars = 1400;
+				canvas.width = canvasW;
+				canvas.height = canvasH;
+				var imgs = new Image();
+				imgs.src = "img/background.png";
+				imgs.width = canvasW;
+				imgs.height = canvasH;
+				imgs.backgroundSize = '100% 100%';
+		
+				var canvas2 = document.createElement('canvas'),
+					ctx2 = canvas2.getContext('2d');
+				canvas2.width = 100;
+				canvas2.height = 100;
+				var half = canvas2.width / 2,
+					gradient2 = ctx2.createRadialGradient(half, half, 0, half, half, half);
+				gradient2.addColorStop(0.025, '#fff');
+				gradient2.addColorStop(0.1, 'hsl(' + hue + ', 61%, 33%)');
+				gradient2.addColorStop(0.25, 'hsl(' + hue + ', 64%, 6%)');
+				gradient2.addColorStop(1, 'transparent');
+		
+				ctx2.fillStyle = gradient2;
+		
+				ctx2.beginPath();
+				ctx2.arc(half, half, half, 0, Math.PI * 2);
+				ctx2.fill();
+		
+				function random(min, max) {
+					if (arguments.length < 2) {
+						max = min;
+						min = 0;
+					}
+		
+					if (min > max) {
+						var hold = max;
+						max = min;
+						min = hold;
+					}
+		
+					return Math.floor(Math.random() * (max - min + 1)) + min;
+				}
+		
+				var Star = function() {
+		
+					this.orbitRadius = random(canvasW - 50);
+					this.radius = random(100, this.orbitRadius) / 10;
+					this.orbitX = canvasW / 2;
+					this.orbitY = canvasH / 2;
+					this.timePassed = random(0, maxStars);
+					this.speed = random(this.orbitRadius) / 5000000;
+					this.alpha = random(2, 10) / 30;
+		
+					count++;
+					stars[count] = this;
+				}
+		
+				Star.prototype.draw = function() {
+					var x = Math.sin(this.timePassed + 1) * this.orbitRadius + this.orbitX,
+						y = Math.cos(this.timePassed) * this.orbitRadius / 2 + this.orbitY,
+						twinkle = random(10);
+		
+					if (twinkle === 1 && this.alpha > 0) {
+						this.alpha -= 0.01;
+					} else if (twinkle === 2 && this.alpha < 1) {
+						this.alpha += 0.01;
+					}
+		
+					ctx.globalAlpha = this.alpha;
+					ctx.drawImage(canvas2, x - this.radius / 2, y - this.radius / 2, this.radius, this.radius);
+					this.timePassed += this.speed;
+				}
+		
+				for (var i = 0; i < maxStars; i++) {
+					new Star();
+				}
+		
+				function animation() {
+		
+					ctx.globalCompositeOperation = 'source-over';
+					ctx.globalAlpha = 0.8;
+					//ctx.fillStyle = 'rgba(0,0,0,0)';
+					//ctx.fillStyle = 'hsla(' + hue + ', 64%, 6%, 1)';
+					ctx.fillRect(0, 0, canvasW, canvasH)
+		
+					var pat = ctx.createPattern(imgs, "no-repeat");
+					ctx.fillStyle = pat;
+		
+					ctx.globalCompositeOperation = 'lighter';
+					for (var i = 1, l = stars.length; i < l; i++) {
+						stars[i].draw();
+					};
+		
+					window.requestAnimationFrame(animation);
+				}
+		
+				animation();
+			</script>
+		
+			<script>
+				//时钟
+		    var counttime = 0;
+		    var nowtime = parseInt("1594817522");
+		    var nowday = "2020年7月15日 星期三";
+		    $(function () {
+		
+		        //$('#timeSpan').html(stampToTime(nowtime).split(" ")[1]);
+		        //$('#dateSpan').html(nowday.split(" ")[0]);
+		        setInterval(function () { setTimeNow(); }, 1000);
+		
+		    });
+		    function setTimeNow() {
+		        //nowtime += 1;
+		        //counttime += 1;
+		        //$('#timeSpan').html(stampToTime(nowtime).split(" ")[1]);
+		
+		        var date = new Date();
+		        var seperator1 = "-";
+		        var seperator2 = ":";
+		        var month = date.getMonth() + 1;
+		        var strDate = date.getDate();
+		        var hour = date.getHours();
+		        var minu = date.getMinutes();
+		        var sec = date.getSeconds();
+		        if (month >= 1 && month <= 9) {
+		            month = "0" + month;
+		        }
+		        if (strDate >= 0 && strDate <= 9) {
+		            strDate = "0" + strDate;
+		        }
+		        if (minu >= 0 && minu <= 9) {
+		            minu = "0" + minu;
+		        }
+		        if (sec >= 0 && sec <= 9) {
+		            sec = "0" + sec;
+		        }
+		        if (hour >= 0 && hour <= 9) {
+		            hour = "0" + hour;
+		        }
+		        $('#timeSpan').html(hour + seperator2 + minu + ':' + sec);
+		        $('#dateSpan').html(date.getFullYear() + "年" + month + "月" + strDate + '日');
+		    }
+		
+		</script>
+		<script>
+			$(function() {
+
+				onLoad();
+			})
+			var map;
+			var zoom = 14;
+
+			function onLoad() {
+				//初始化地图对象
+				map = new T.Map("map");
+				//设置显示地图的中心点和级别
+				map.centerAndZoom(new T.LngLat(102.48, 24.92), zoom);
+				//允许鼠标滚轮缩放地图
+				map.enableScrollWheelZoom();
+
+				var imageURL = "https://t0.tianditu.gov.cn/img_w/wmts?" +
+					"SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles" +
+					"&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=10908abdd40599d3a3ebbc012bb3549a";
+				//创建自定义图层对象
+				var lay = new T.TileLayer(imageURL, {
+					minZoom: 1,
+					maxZoom: 18
+				});
+				//将图层增加到地图上
+				map.addLayer(lay);
+			}
+		</script>
+		<script>
+			$(document).ready(function() {
+				$(".topbtn div").click(function() {
+					var nav = this.id;
+					$('.topbtn div').removeClass('selbtn');
+					$(this).addClass("selbtn");
+					$('.modelDiv').removeClass('modelDivsel');
+					$('.' + nav).addClass('modelDivsel');
+				});
+		
+			});
+		</script>
+
+	</body>
+
+</html>

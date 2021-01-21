@@ -1,0 +1,682 @@
+* {
+	padding: 0;
+	margin: 0;
+	color: white;
+}
+
+/* 左侧 */
+.ly-flex {
+	display: flex;
+	margin-top: 100px;
+}
+
+.ly-flex div {
+	flex: 1;
+	position: relative;
+	text-align: center;
+}
+
+.ly-flex div.number {
+	position: absolute;
+	left: 50%;
+	top: -10px;
+	font-size: 22px;
+	transform: translate(-50%);
+}
+
+.ly-flex div img {
+	width: 8vh;
+	height: 8vh;
+	border-radius: 5px;
+}
+
+.ly-flex div h5 {
+	margin: 0;
+}
+
+.ly-flex-right {
+	display: flex;
+	margin-top: 70px;
+}
+
+.ly-flex-right div {
+	flex: 1;
+	position: relative;
+	text-align: center;
+}
+
+.ly-flex-right div.number {
+	position: absolute;
+	left: 50%;
+	top: 38px;
+	transform: translate(-50%);
+	font-size: 16px;
+}
+
+.ly-flex-right div img {
+	/*width: 90px;
+				height: 90px;*/
+	width: 8vh;
+	height: 8vh;
+	border-radius: 50%;
+}
+
+.ly-flex-right div h5 {
+	margin: 0;
+	margin-top: 5px;
+}
+
+.greenbelt div {
+	background-color: #0b2363;
+	margin: 10px 15px;
+	line-height: 30px;
+}
+
+.greenbelt .span {
+	position: relative;
+}
+
+.greenbelt .span span {
+	display: inline-block;
+	width: 15px;
+	height: 8px;
+	background-color: #243f70;
+}
+
+.greenbelt .span span:nth-child(1) {
+	background-color: #0b2363;
+}
+
+.greenbelt .span span:nth-child(2),
+.greenbelt .span span:nth-child(3),
+.greenbelt .span span:nth-child(4),
+.greenbelt .span span:nth-child(5),
+.greenbelt .span span:nth-child(6),
+.greenbelt .span span:nth-child(7) {
+	background-color: #10d1dd;
+}
+
+.greenbelt .span span:last-child {
+	right: 20px;
+	height: 30px;
+	width: 70px;
+	text-align: center;
+	font-size: 14px;
+	position: absolute;
+	top: 0;
+	right: -15px;
+	outline: 1px solid #ffc602;
+}
+
+.topWeather {
+	position: absolute;
+	width: 33.3%;
+	height: 100%;
+	text-align: center;
+	font-size: 0.8vw;
+	font-weight: 500;
+	cursor: default;
+}
+
+.dropdown {
+	position: absolute;
+	top: 0px;
+	right: -80px;
+}
+
+.dropdown-menu {
+	z-index: 999999999 !important;
+	background-color: #006bbd !important;
+	min-width: 7rem;
+}
+
+.dropdown-item {
+	color: white;
+}
+
+.dropdown-item:hover {
+	color: white;
+	background-color: #006bbd !important;
+	text-decoration: none;
+}
+
+.selbtn {
+	background-image: url(../img/seltopbtn.png) !Important;
+	color: #fff !Important;
+}
+
+.layui-layer-dialog {
+	border: 3px solid rgba(0, 204, 255, 0.6);
+	background-color: rgba(6, 38, 78, 0.9);
+}
+
+.layui-layer-dialog .layui-layer-padding {
+	font-size: 20px;
+	color: #fff;
+}
+
+.mapTopTitle {
+	position: absolute;
+	width: 100%;
+	height: 33.3%;
+	font-size: 0.7vw;
+	font-weight: 500;
+	color: rgba(255, 255, 255, 0.9);
+	letter-spacing: 0.2vw;
+	text-align: center;
+	cursor: pointer;
+}
+
+.mapTopInfo {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-image: url(../img/titledown.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	/*background-color:red;*/
+	color: rgba(0, 228, 255, 0.9);
+}
+
+.mapTopField {
+	position: absolute;
+	width: 100%;
+	height: 33.3%;
+	top: 33.3%;
+	font-size: 1.4vw;
+	font-weight: bold;
+	color: rgba(0, 228, 255, 0.9);
+	letter-spacing: 0.2vw;
+	text-align: center;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	cursor: pointer;
+}
+
+.modelDiv {
+	position: absolute;
+	width: 24.5%;
+	height: 32%;
+	border: 1px solid rgba(0, 204, 255, 0.3);
+	background-color: rgba(6, 38, 78, 0.4);
+	overflow: hidden;
+}
+
+.modelDivsel {
+	border-color: #feef00 !Important;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(254, 239, 0, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(254, 239, 0, 0.6);
+	-webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.modelTitle {
+	position: absolute;
+	width: 5.83vw;
+	height: 2vw;
+	left: 3%;
+	top: 3%;
+	background-image: url(../img/sammltitledowns.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	color: rgba(0, 228, 255, 0.9);
+	font-size: 1vw;
+	font-weight: 700;
+	text-align: center;
+	line-height: 2vw;
+	cursor: pointer;
+	z-index: 300;
+}
+
+i {
+	display: none;
+}
+
+.modelMenu {
+	position: absolute;
+	width: calc(92% - 6.83vw);
+	height: 2.2vw;
+	right: 4%;
+	top: 3%;
+	border-radius: 12px;
+	cursor: pointer;
+}
+
+.modelMenuDiv {
+	position: absolute;
+	width: auto;
+	height: 100%;
+	left: 0%;
+	font-size: 0.8vw;
+	color: white;
+	text-align: center;
+	line-height: 2.22vw;
+	overflow: hidden;
+}
+
+.modelMenuPCss {
+	width: 100%;
+	color: rgba(0, 228, 255, 0.9);
+	font-size: 0.7vw;
+	line-height: 2vw;
+	font-weight: 500;
+	display: inline;
+}
+
+.leaflet-top {
+	display: none;
+}
+
+.modelInfo {
+	position: absolute;
+	width: 94%;
+	left: 3%;
+	height: calc(95% - 1vw);
+	top: calc(3% + 2vw);
+	text-align: center;
+}
+
+.modelInfoEcts {
+	position: absolute;
+	width: 100%;
+	height: calc(97% - 2.32vw);
+	top: calc(3% + 2.32vw);
+	text-align: center;
+}
+
+.echartDiv {
+	position: absolute;
+	width: 98%;
+	height: 96%;
+	left: 1%;
+	top: 2%;
+	z-index: 100;
+	/*background-color:rgba(0,0,0,0.5);*/
+}
+
+.modelDetail {
+	position: absolute;
+	width: 40%;
+	height: 98%;
+	left: 0;
+	top: 2%;
+}
+
+.mapExpField {
+	display: inline-block;
+	width: 15px;
+	height: 18px;
+	border-radius: 5px;
+	margin-right: 5px;
+	background-image: url(../img/红色.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+.ryNotice {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	color: white;
+}
+
+.ryNotice ul {
+	position: relative;
+	width: 100%;
+}
+
+.ryNotice ul li {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	list-style: none;
+	/*以下为了单行显示，超出隐藏*/
+	display: block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.ryMoveP {
+	width: 100%;
+	color: rgba(0, 228, 255, 0.9);
+	font-size: 0.8vw;
+	text-align: center;
+	line-height: 1.5vw;
+	font-weight: 600;
+}
+
+.ryMoveMan {
+	width: 1vw;
+	height: 2vw;
+	margin: 10px auto;
+	background-image: url(../img/进场.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+.ryMovePointer {
+	width: 0.53vw;
+	height: 1.67vw;
+	margin: 6px auto;
+	background-image: url(../img/进场箭头.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+.ryMoveIn {
+	position: relative;
+	height: 100%;
+	left: 0;
+	top: 0;
+	margin: 0 auto;
+}
+
+.ryMoveOut {
+	position: relative;
+	height: 100%;
+	left: 0;
+	top: 0;
+	margin: 0 auto;
+}
+
+.ryMoveOffset {
+	position: relative;
+	bottom: 0;
+}
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+	width: 0px;
+	/*滚动条宽度*/
+	height: 10px;
+	/*滚动条高度*/
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 8px;
+	/*滚动条的背景区域的圆角*/
+	background-color: #0b3b5e;
+	/*滚动条的背景颜色*/
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	/*滚动条的圆角*/
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+	background-color: #1e90ff;
+	/*滚动条的背景颜色*/
+}
+
+.layui-table-fixed-r {
+	display: none;
+}
+
+.contentTopCss {
+	position: absolute;
+	width: 100%;
+	height: 12%;
+}
+
+.contentTopCss div {
+	text-align: left;
+	font-size: 0.8vw;
+	font-weight: bold;
+	color: rgba(0, 204, 255, 1);
+}
+
+.contentListCss {
+	position: absolute;
+	width: 25%;
+	left: 0%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.contentFieldCss {
+	position: absolute;
+	width: 100%;
+	height: 88%;
+	top: 12%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-right: 2000px;
+}
+
+.contentFieldCss img {
+	height: 100%;
+	max-height: 80px;
+	/*padding-top: 2vw;*/
+}
+
+.contentFieldLine {
+	position: relative;
+	width: 100%;
+	height: 24px;
+	cursor: default;
+}
+
+.contentFieldLine div {
+	text-align: left;
+	font-size: 0.7vw;
+	color: white;
+	line-height: 24px;
+}
+
+.contentFieldLine img {
+	width: 0.7vw;
+	height: 0.7vw;
+	padding-right: 7px;
+	padding-bottom: 4px;
+}
+
+.contentFieldLine .ycglImgCss {
+	width: 1vw;
+	height: 1vw;
+	padding-left: 7px;
+}
+
+.modelMenuDiv img {
+	width: 1.4vw;
+	height: 1vw;
+	padding-right: 7px;
+	padding-bottom: 4px;
+}
+
+.modelInfoMap {
+	position: absolute;
+	width: 25%;
+	height: 80%;
+	top: 20%;
+	background-image: url(../../Vendor/Asset/newindexSJ/sfqydk.png);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	text-align: center;
+	cursor: pointer;
+	overflow: hidden;
+	z-index: 110;
+}
+
+.contentTopCssMap {
+	position: absolute;
+	width: 100%;
+	height: 5%;
+	border-bottom: 1px solid rgba(0, 204, 255, 0.4);
+}
+
+.contentTopCssMap div {
+	text-align: center;
+	font-size: 0.5vw;
+	font-weight: bold;
+	color: rgba(0, 204, 255, 1);
+}
+
+.contentFieldCssMap {
+	position: absolute;
+	width: 100%;
+	height: 88%;
+	top: 6%;
+	padding-right: 2000px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.contentFieldLineMap {
+	position: relative;
+	width: 100%;
+	height: 20px;
+}
+
+.contentFieldLineMap div {
+	text-align: center;
+	font-size: 0.5vw;
+	color: white;
+	line-height: 20px;
+}
+
+.modelTurnBtn {
+	position: absolute;
+	width: 2vw;
+	height: 1.7vw;
+	right: -1vw;
+	top: calc(-3% - 2.32vw);
+	cursor: pointer;
+	z-index: 100;
+	display: none;
+}
+
+.modelTurnBtn img {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	right: 0;
+	top: -1px;
+}
+
+.detail_info {
+	height: 24px;
+	line-height: 24px;
+}
+
+.layui-colla-title {
+	height: 24px;
+	line-height: 24px;
+}
+
+.layui-tab-title .layui-this {
+	color: #fff !important;
+	background-color: #00B4FF;
+}
+
+.layui-tab-title li {
+	width: 33.33%;
+	box-sizing: border-box;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+
+.layui-tab-title .layui-this:after {
+	position: absolute;
+	left: 0;
+	top: 0;
+	content: '';
+	width: 100%;
+	height: 41px;
+	border: none;
+	border-radius: 2px 2px 0 0;
+	box-sizing: border-box;
+	pointer-events: none;
+}
+
+.layui-tab-item {
+	height: 100%;
+	width: 100%;
+}
+
+.layui-tab-item-title {
+	width: 100%;
+	height: 24px;
+	box-sizing: border-box;
+	padding: 0 5px 0 20px;
+}
+
+.layui-tab-item-title-model {
+	width: 20%;
+	left: 0%;
+	float: left;
+	height: 24px;
+	line-height: 24px;
+	text-align: center;
+	font-size: 0.7vw;
+}
+
+.layui-tab-item-info {
+	width: 100%;
+	height: calc(100% - 24px);
+	background-color: rgba(6, 38, 78, 0.4);
+	overflow-y: scroll;
+}
+
+.layui-collapse {
+	border: none;
+}
+
+.layui-colla-item {
+	margin: 2px 0;
+	border-top: none;
+}
+
+.layui-colla-title {
+	/*//background-color: #013460;*/
+	background-color: rgba(1, 52, 96, 0.5);
+	color: #fff;
+	padding: 0 5px 0 20px;
+}
+
+.layui-colla-content {
+	max-height: 250px;
+	overflow-y: scroll;
+}
+
+.layui-colla-icon {
+	color: #00E4FF;
+	left: 5px;
+}
+
+.width_7 {
+	width: 14.28%;
+}
+
+.width_6 {
+	width: 16.66%;
+}
+
+.width_5 {
+	width: 20%;
+}
+
+.width_4 {
+	width: 25%;
+}
+
+.width_3 {
+	width: 33%;
+}
+
+.width_2 {
+	width: 50%;
+}
+
+.layui-colla-content {
+	padding: 0 5px 0 20px;
+}
+
+.truncate {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
