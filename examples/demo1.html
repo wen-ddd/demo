@@ -103,38 +103,38 @@
 						var cartographic = Cesium.Cartographic.fromCartesian(position);
 						var longitude = Cesium.Math.toDegrees(cartographic.longitude);
 						var latitude = Cesium.Math.toDegrees(cartographic.latitude);
-						
+
 						var height = cartographic.height;
 
 						var queryPoint = { // 查询点对象
 							x: longitude,
 							y: latitude
 						};
+
 						viewerflyToLonLat(longitude, latitude, height);
 
 						queryByPoint(queryPoint, longitude, latitude, height);
 
 					}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-					
-					
+
+
 					// 去除加载动画
 					// $('#toolbar').show();
 					$('#loadingbar').remove();
-					
+
 					//获取url参数
-					var lon= getUrlParam('longitude');
-					var lat= getUrlParam('latitude');
-					if(!$.isEmptyObject(lon) && !$.isEmptyObject(lat)){
-						lon= Number(lon);
-						lat= Number(lat);
-						var hei = 1918.7042850104774;
-						
+					var lon = getUrlParam('longitude'); //102.41448956264374
+					var lat = getUrlParam('latitude'); //24.921634687184966
+					if (!$.isEmptyObject(lon) && !$.isEmptyObject(lat)) {
+						lon = Number(lon);
+						lat = Number(lat);
 						var queryPoint = { // 查询点对象
 							x: lon,
 							y: lat
 						};
+						var hei = jump(queryPoint);
 						viewerflyToLonLat(lon, lat, hei);
-						
+
 						queryByPoint(queryPoint, lon, lat, hei);
 					}
 
@@ -187,6 +187,41 @@
 							console.log(msg);
 						}
 					})
+				}
+
+				function jump(point) {
+					var z = 0;
+					var queryobj = {
+						"geometries": [{
+							"type": "POINT3D",
+							"x": point.x,
+							"y": point.y,
+							"z": 0
+						}],
+						"sceneName": "qlin", //三维场景
+						"layerName": "Config", //三维图层
+						"interpolationDistance": 0
+					};
+
+					$.ajaxSettings.async = false;
+					let queryobjJSON = JSON.stringify(queryobj); //转化为JsoN字符串作为查询参数 
+					$.ajax({
+						type: "post",
+						url: "http://localhost:8090/iserver/services/spatialAnalysis-ql/restjsr/spatialanalyst/geometry/3d/extractvector3d.rjson?returnContent=true",
+						data: queryobjJSON,
+						success: function(result) {
+							var res = JSON.parse(result);
+							if (res.geometries[0] != null) {
+
+								z = res.geometries[0].position.z;
+							}
+
+							console.log(res);
+
+						}
+					})
+					return z;
+
 				}
 
 				// 将数据服务查询到的要素添加到场景中高亮显示，表示选中效果。
