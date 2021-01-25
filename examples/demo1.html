@@ -1,291 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-		<title>麒麟产业园区</title>
-		<link href="../Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="css/pretty.css" rel="stylesheet">
-		<link rel="stylesheet" href="css/ss.css">
-		<script src="js/jquery.min.js"></script>
-		<script src="js/Bubble.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/bootstrap-select.min.js"></script>
-		<script src="./js/config.js"></script>
-		<script type="text/javascript" src="../Build/Cesium/Cesium.js"></script>
-		<style type="text/css">
-			.cesium-viewer-bottom {
-				display: none;
-			}
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>麒麟产业园区</title>
+	<link href="../Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/pretty.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/ss.css">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/Bubble.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/bootstrap-select.min.js"></script>
+	<script src="./js/config.js"></script>
+	<script type="text/javascript" src="../Build/Cesium/Cesium.js"></script>
+	<style type="text/css">
+		.cesium-viewer-bottom {
+			display: none;
+		}
 
-			label {
-				width: auto;
-				display: inline-block;
-			}
-		</style>
-	</head>
+		label {
+			width: auto;
+			display: inline-block;
+		}
+	</style>
+</head>
 
-	<body>
-		<div id="cesiumContainer"></div>
-		<div id="loadingbar" class="spinner">
-			<div class="spinner-container container1">
-				<div class="circle1"></div>
-				<div class="circle2"></div>
-				<div class="circle3"></div>
-				<div class="circle4"></div>
-			</div>
-			<div class="spinner-container container2">
-				<div class="circle1"></div>
-				<div class="circle2"></div>
-				<div class="circle3"></div>
-				<div class="circle4"></div>
-			</div>
-			<div class="spinner-container container3">
-				<div class="circle1"></div>
-				<div class="circle2"></div>
-				<div class="circle3"></div>
-				<div class="circle4"></div>
-			</div>
+<body>
+	<div id="cesiumContainer"></div>
+	<div id="loadingbar" class="spinner">
+		<div class="spinner-container container1">
+			<div class="circle1"></div>
+			<div class="circle2"></div>
+			<div class="circle3"></div>
+			<div class="circle4"></div>
 		</div>
-		<!-- <div id='toolbar' class="param-container tool-bar">
-    <p>提示：</p>
-    <span>点击房屋面以查看动态单体化效果</span>
-</div> -->
-		<blockquote id="bubble" class="bubble leaflet-popup-content-wrapper" style="width: 360px;height: 190px">
-			<div class="leaflet-popup-content" style="width: 551px;">
-				<div class="divMapInfoWindowContent" style="overflow-y: auto;overflow-x: hidden;margin-top:20px;">
-					<div class="divInfo">
-						<div class="popup-titleName"><span id="type"></span></div>
-						<div style="width:96%;"><label>用地性质代码：</label><span id="code"></span> </div>
-						<div style="width:96%;"><label>用地性质名称：</label><span id="name"></span> </div>
-						<div style="width:96%;"><label>占地面积(亩)：</label><span id="area"></span> </div>
-						<!-- <div><label>招商面积<span class="popup-item-en">(Business area)</span>：</label>65180㎡</div>
-						<div><label>联系人<span class="popup-item-en">(Linkman)</span>：</label> xx</div>
-						<div><label>联系电话<span class="popup-item-en">(Number)</span>：</label> 18651792200</div> -->
-						<!-- <div style="width:96%;"><label>用途<span class="popup-item-en">(Use)</span>：</label>新一代信息技术</div>
-						<div><label>备注<span class="popup-item-en">(Remarks)</span>：</label>-</div> -->
-
-					</div>
+		<div class="spinner-container container2">
+			<div class="circle1"></div>
+			<div class="circle2"></div>
+			<div class="circle3"></div>
+			<div class="circle4"></div>
+		</div>
+		<div class="spinner-container container3">
+			<div class="circle1"></div>
+			<div class="circle2"></div>
+			<div class="circle3"></div>
+			<div class="circle4"></div>
+		</div>
+	</div>
+	
+	<blockquote id="bubble" class="bubble leaflet-popup-content-wrapper" style="width: 360px;height: 190px">
+		<div class="leaflet-popup-content" style="width: 551px;">
+			<div class="divMapInfoWindowContent" style="overflow-y: auto;overflow-x: hidden;margin-top:20px;">
+				<div class="divInfo">
+					<div class="popup-titleName"><span id="type"></span></div>
+					<div style="width:96%;"><label>用地性质代码：</label><span id="code"></span> </div>
+					<div style="width:96%;"><label>用地性质名称：</label><span id="name"></span> </div>
+					<div style="width:96%;"><label>占地面积(亩)：</label><span id="area"></span> </div>
 				</div>
 			</div>
-		</blockquote>
-		<script>
-			function onload(Cesium) {
-				var infoboxContainer = document.getElementById("bubble");
-				var viewer = new Cesium.Viewer('cesiumContainer');
-				var scene = viewer.scene;
-				var camera = scene.camera;
-				viewer.customInfobox = infoboxContainer;
-				var bubble = new Bubble(scene, 'bubble');
-				var entity;
+		</div>
+	</blockquote>
+	<script>
+		function onload(Cesium) {
+			var infoboxContainer = document.getElementById("bubble");
+			var viewer = new Cesium.Viewer('cesiumContainer');
+			var scene = viewer.scene;
+			var camera = scene.camera;
+			viewer.customInfobox = infoboxContainer;
+			var bubble = new Bubble(scene, 'bubble');
+			var entity;
 
-				// 方法一，通过数据服务的形式添加单体化标识面
-				// (推荐使用)
-				var dataServiceUrl =
-					'http://localhost:8090/iserver/services/data-ql/rest/data/featureResults.rjson?returnContent=true'; // 数据服务URL
-				var dataSourceName = 'ql'; // 数据源名称
-				var dataSetName = 'New_Region'; // 数据集名称
-				// 加载倾斜摄影图层
-				var promise = scene.open('http://localhost:8090/iserver/services/3D-ql/rest/realspace');
+			// 方法一，通过数据服务的形式添加单体化标识面
+			// (推荐使用)
+			var dataServiceUrl =
+				'http://localhost:8090/iserver/services/data-ql/rest/data/featureResults.rjson?returnContent=true'; // 数据服务URL
+			var dataSourceName = 'ql'; // 数据源名称
+			var dataSetName = 'New_Region'; // 数据集名称
+			// 加载倾斜摄影图层
+			var promise = scene.open('http://localhost:8090/iserver/services/3D-ql/rest/realspace');
 
-				promise.then(function(obliqueLayers) {
+			promise.then(function (obliqueLayers) {
 
-					var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
-					handler.setInputAction(function(e) {
-						// 首先移除之前添加标识实体
-						viewer.entities.removeById('identify-area');
-						// 获取点击位置笛卡尔坐标
-						var position = scene.pickPosition(e.position);
-						// 从笛卡尔坐标获取经纬度
-						var cartographic = Cesium.Cartographic.fromCartesian(position);
-						var longitude = Cesium.Math.toDegrees(cartographic.longitude);
-						var latitude = Cesium.Math.toDegrees(cartographic.latitude);
+				var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+				handler.setInputAction(function (e) {
+					// 首先移除之前添加标识实体
+					viewer.entities.removeById('identify-area');
+					// 获取点击位置笛卡尔坐标
+					var position = scene.pickPosition(e.position);
+					// 从笛卡尔坐标获取经纬度
+					var cartographic = Cesium.Cartographic.fromCartesian(position);
+					var longitude = Cesium.Math.toDegrees(cartographic.longitude);
+					var latitude = Cesium.Math.toDegrees(cartographic.latitude);
 
-						var height = cartographic.height;
+					var height = cartographic.height;
 
-						var queryPoint = { // 查询点对象
-							x: longitude,
-							y: latitude
-						};
+					var queryPoint = { // 查询点对象
+						x: longitude,
+						y: latitude
+					};
 
-						viewerflyToLonLat(longitude, latitude, height);
+					viewerflyToLonLat(longitude, latitude, height);
 
-						queryByPoint(queryPoint, longitude, latitude, height);
+					queryByPoint(queryPoint, longitude, latitude, height);
 
-					}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+				}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
 
-					// 去除加载动画
-					// $('#toolbar').show();
-					$('#loadingbar').remove();
+				// 去除加载动画
+				// $('#toolbar').show();
+				$('#loadingbar').remove();
 
-					//获取url参数
-					var lon = getUrlParam('longitude'); //102.41448956264374
-					var lat = getUrlParam('latitude'); //24.921634687184966
-					if (!$.isEmptyObject(lon) && !$.isEmptyObject(lat)) {
-						lon = Number(lon);
-						lat = Number(lat);
-						var queryPoint = { // 查询点对象
-							x: lon,
-							y: lat
-						};
-						var hei = jump(queryPoint);
-						viewerflyToLonLat(lon, lat, hei);
+				//获取url参数
+				var lon = getUrlParam('longitude'); //102.41448956264374
+				var lat = getUrlParam('latitude'); //24.921634687184966
+				if (!$.isEmptyObject(lon) && !$.isEmptyObject(lat)) {
+					lon = Number(lon);
+					lat = Number(lat);
+					var queryPoint = { // 查询点对象
+						x: lon,
+						y: lat
+					};
+					var hei = heightByPoint(queryPoint);
+					viewerflyToLonLat(lon, lat, hei);
 
-						queryByPoint(queryPoint, lon, lat, hei);
+					queryByPoint(queryPoint, lon, lat, hei);
+				}
+
+
+			});
+
+			// 通过点击查询用于表示单体化的面要素，添加到场景中高亮显示。
+			function queryByPoint(queryPoint, lo, la, he) {
+				var queryObj = {
+					"getFeatureMode": "SPATIAL",
+					"spatialQueryMode": "INTERSECT",
+					"datasetNames": [dataSourceName + ":" + dataSetName],
+					"geometry": {
+						id: 0,
+						parts: [1],
+						points: [queryPoint],
+						type: "POINT"
 					}
+				};
 
+				queryObjJSON = JSON.stringify(queryObj); // 转化为JSON字符串作为查询参数
 
+				$.ajax({
+					type: "post",
+					url: dataServiceUrl,
+					data: queryObjJSON,
+					success: function (result) {
+						var resultObj = JSON.parse(result);
+						if (resultObj.featureCount > 0) {
+							addClapFeature(resultObj.features[0]);
+							console.log(resultObj)
+						}
+						if (resultObj.features[0] != undefined) {
+							var bubbleposition = new Cesium.Cartesian3.fromDegrees(lo, la, he);
+							var type = document.getElementById('type');
+							type.innerHTML = resultObj.features[0].fieldValues[10];
+							var code = document.getElementById('code');
+							code.innerHTML = resultObj.features[0].fieldValues[11];
+							var name = document.getElementById('name');
+							name.innerHTML = resultObj.features[0].fieldValues[12];
+							var area = document.getElementById('area');
+							area.innerHTML = resultObj.features[0].fieldValues[13];
+							bubble.showAt(bubbleposition);
+
+						} else if (resultObj.features[0] == undefined) {
+							bubble.visibility(false);
+						}
+					},
+					error: function (msg) {
+						console.log(msg);
+					}
+				})
+			}
+
+			//三维空间分析 用于查询高度
+			function heightByPoint(point) {
+				var z = 0;
+				var queryobj = {
+					"geometries": [{
+						"type": "POINT3D",
+						"x": point.x,
+						"y": point.y,
+						"z": 0
+					}],
+					"sceneName": "qlin", //三维场景
+					"layerName": "Config", //三维图层
+					"interpolationDistance": 0
+				};
+
+				$.ajaxSettings.async = false;
+				let queryobjJSON = JSON.stringify(queryobj); //转化为JsoN字符串作为查询参数 
+				$.ajax({
+					type: "post",
+					url: "http://localhost:8090/iserver/services/spatialAnalysis-ql/restjsr/spatialanalyst/geometry/3d/extractvector3d.rjson?returnContent=true",
+					data: queryobjJSON,
+					success: function (result) {
+						var res = JSON.parse(result);
+						if (res.geometries[0] != null) {
+
+							z = res.geometries[0].position.z;
+						}
+
+						console.log(res);
+
+					}
+				})
+				return z;
+
+			}
+
+			// 将数据服务查询到的要素添加到场景中高亮显示，表示选中效果。
+			function addClapFeature(feature) {
+				var lonLatArr = getLonLatArray(feature.geometry.points);
+				viewer.entities.add({
+					id: 'identify-area',
+					name: '单体化标识面',
+					polygon: {
+						hierarchy: Cesium.Cartesian3.fromDegreesArray(lonLatArr),
+						material: new Cesium.Color(1.0, 0.0, 0.0, 0.3),
+					},
+					classificationType: Cesium.ClassificationType.S3M_TILE // 贴在S3M模型表面
 				});
-
-				// 通过点击查询用于表示单体化的面要素，添加到场景中高亮显示。
-				function queryByPoint(queryPoint, lo, la, he) {
-					var queryObj = {
-						"getFeatureMode": "SPATIAL",
-						"spatialQueryMode": "INTERSECT",
-						"datasetNames": [dataSourceName + ":" + dataSetName],
-						"geometry": {
-							id: 0,
-							parts: [1],
-							points: [queryPoint],
-							type: "POINT"
-						}
-					};
-
-					queryObjJSON = JSON.stringify(queryObj); // 转化为JSON字符串作为查询参数
-
-					$.ajax({
-						type: "post",
-						url: dataServiceUrl,
-						data: queryObjJSON,
-						success: function(result) {
-							var resultObj = JSON.parse(result);
-							if (resultObj.featureCount > 0) {
-								addClapFeature(resultObj.features[0]);
-								console.log(resultObj)
-							}
-							if (resultObj.features[0] != undefined) {
-								var bubbleposition = new Cesium.Cartesian3.fromDegrees(lo, la, he);
-								var type = document.getElementById('type');
-								type.innerHTML = resultObj.features[0].fieldValues[10];
-								var code = document.getElementById('code');
-								code.innerHTML = resultObj.features[0].fieldValues[11];
-								var name = document.getElementById('name');
-								name.innerHTML = resultObj.features[0].fieldValues[12];
-								var area = document.getElementById('area');
-								area.innerHTML = resultObj.features[0].fieldValues[13];
-								bubble.showAt(bubbleposition);
-
-							} else if (resultObj.features[0] == undefined) {
-								bubble.visibility(false);
-							}
-						},
-						error: function(msg) {
-							console.log(msg);
-						}
-					})
-				}
-
-				function jump(point) {
-					var z = 0;
-					var queryobj = {
-						"geometries": [{
-							"type": "POINT3D",
-							"x": point.x,
-							"y": point.y,
-							"z": 0
-						}],
-						"sceneName": "qlin", //三维场景
-						"layerName": "Config", //三维图层
-						"interpolationDistance": 0
-					};
-
-					$.ajaxSettings.async = false;
-					let queryobjJSON = JSON.stringify(queryobj); //转化为JsoN字符串作为查询参数 
-					$.ajax({
-						type: "post",
-						url: "http://localhost:8090/iserver/services/spatialAnalysis-ql/restjsr/spatialanalyst/geometry/3d/extractvector3d.rjson?returnContent=true",
-						data: queryobjJSON,
-						success: function(result) {
-							var res = JSON.parse(result);
-							if (res.geometries[0] != null) {
-
-								z = res.geometries[0].position.z;
-							}
-
-							console.log(res);
-
-						}
-					})
-					return z;
-
-				}
-
-				// 将数据服务查询到的要素添加到场景中高亮显示，表示选中效果。
-				function addClapFeature(feature) {
-					var lonLatArr = getLonLatArray(feature.geometry.points);
-					viewer.entities.add({
-						id: 'identify-area',
-						name: '单体化标识面',
-						polygon: {
-							hierarchy: Cesium.Cartesian3.fromDegreesArray(lonLatArr),
-							material: new Cesium.Color(1.0, 0.0, 0.0, 0.3),
-						},
-						classificationType: Cesium.ClassificationType.S3M_TILE // 贴在S3M模型表面
-					});
-				}
-
-				// 得到[经度,纬度,经度,纬度...]形式的数组，用于构造面。
-				function getLonLatArray(points) {
-					var point3D = [];
-					points.forEach(function(point) {
-						point3D.push(point.x);
-						point3D.push(point.y);
-					});
-					return point3D;
-				}
-
-				function viewerflyToLonLat(lon, lat, he) {
-					if (entity)
-						viewer.entities.remove(entity);
-					entity = new Cesium.Entity({
-						id: 'flyTmp',
-						position: Cesium.Cartesian3.fromDegrees(lon, lat, he),
-						point: {
-							pixelSize: 10,
-							color: Cesium.Color.WHITE.withAlpha(0.9),
-							outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
-							outlineWidth: 1
-						}
-					});
-					viewer.entities.add(entity);
-					viewer.flyTo(entity, {
-						offset: {
-							heading: Cesium.Math.toRadians(0.0),
-							pitch: Cesium.Math.toRadians(-40),
-							range: he
-						}
-					});
-				}
-
-			}
-			if (typeof Cesium !== 'undefined') {
-				window.startupCalled = true;
-				onload(Cesium);
 			}
 
-			function getUrlParam(name) {
-				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-				var r = window.location.search.substr(1).match(reg); //匹配目标参数
-				if (r != null)
-					return unescape(r[2]);
-
-				return null; //返回参数值
+			// 得到[经度,纬度,经度,纬度...]形式的数组，用于构造面。
+			function getLonLatArray(points) {
+				var point3D = [];
+				points.forEach(function (point) {
+					point3D.push(point.x);
+					point3D.push(point.y);
+				});
+				return point3D;
 			}
-		</script>
-	</body>
+
+			function viewerflyToLonLat(lon, lat, he) {
+				if (entity)
+					viewer.entities.remove(entity);
+				entity = new Cesium.Entity({
+					id: 'flyTmp',
+					position: Cesium.Cartesian3.fromDegrees(lon, lat, he),
+					point: {
+						pixelSize: 10,
+						color: Cesium.Color.WHITE.withAlpha(0.9),
+						outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
+						outlineWidth: 1
+					}
+				});
+				viewer.entities.add(entity);
+				viewer.flyTo(entity, {
+					offset: {
+						heading: Cesium.Math.toRadians(0.0),
+						pitch: Cesium.Math.toRadians(-40),
+						range: he
+					}
+				});
+			}
+
+		}
+		if (typeof Cesium !== 'undefined') {
+			window.startupCalled = true;
+			onload(Cesium);
+		}
+
+		function getUrlParam(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg); //匹配目标参数
+			if (r != null)
+				return unescape(r[2]);
+
+			return null; //返回参数值
+		}
+	</script>
+</body>
 
 </html>
