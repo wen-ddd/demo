@@ -29,7 +29,7 @@ h2{height:32px;background:#eeeeee;padding-left:8px;font-weight:normal;line-heigh
 .mapall{float:left;position:relative;width: calc(100vw - 315px);height:100%;}
 .mapBox{z-index:2;float:left;width:100%;height:100%;}
 .divMapInfoWindowContent label{position:relative;font-weight:bold;}
-.popup-titleName{font-weight:bold;border-bottom: 1px solid #d9d9d9;width: 100% !important;height: 30px;font-size: 16px;color:#5ca0c5;margin-bottom: 5px;}
+.popup-titleName{font-weight:bold;border-bottom: 1px solid #d9d9d9;height: 30px;font-size: 16px;color:#5ca0c5;margin-bottom: 5px;}
 .popup-titleName-en{ color: #666;font-size: 13px;font-weight: 100;margin-left:10px;}
 .popup-titleName-en.mobile{ margin-left:0 !important;}
 .popup-item-en{ color: #666;font-size: 12px;font-weight: 100;}
@@ -219,7 +219,7 @@ h2{height:32px;background:#eeeeee;padding-left:8px;font-weight:normal;line-heigh
 .infowindow-color{color:#666;}
 .divInfo table{width:100%;}
 .divInfo table td{padding:3px;}
-.divInfo div{margin-right:10px; width: 47%;padding: 2px 0px;display: inline-table;}
+.divInfo div{margin-right:10px; width: 67%;padding: 2px 0px;display: inline-table;}
 
 .layout_default{}
 .layout_default img{width:160px;height:90px;margin-right:10px;margin-bottom:10px;}

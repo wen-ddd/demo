@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="天地图"/>
+    <title>天地图－地图API－范例－添加复杂内容的信息窗口</title>
+    <style type="text/css">
+        body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+        #mapDiv{height:400px;width:100%;}
+        input,p { margin-left: 5px; font-size: 14px;  }
+    </style>
+    <script type="text/javascript" src="http://api.tianditu.gov.cn/api?v=4.0&tk=10908abdd40599d3a3ebbc012bb3549a"></script>
+    <script>
+        var map;
+        var zoom = 12;
+        var center;
+        var localsearch;
+        var radius = 5000;
+        var marker;
+        var infoWin;
+
+        function onLoad() {
+        	center = new T.LngLat(116.63072, 40.054952);
+            //初始化地图对象
+            map = new T.Map("mapDiv");
+            //设置显示地图的中心点和级别
+            map.centerAndZoom(center, zoom);
+			
+			var imageURL = "https://t0.tianditu.gov.cn/img_w/wmts?" +
+				"SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles" +
+				"&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=10908abdd40599d3a3ebbc012bb3549a";
+			//创建自定义图层对象
+			var lay = new T.TileLayer(imageURL, {
+				minZoom: 1,
+				maxZoom: 18
+			});
+			//将图层增加到地图上
+			map.addLayer(lay);
+			
+            //创建信息窗口对象
+            marker = new T.Marker(center);// 创建标注
+            map.addOverLay(marker);
+            var infoWin1 = new T.InfoWindow();
+            var sContent =
+                "<div style='margin:0px;'>" +
+                "<div style='margin:10px 10px; '>" +
+                "<img style='float:left;margin:0px 10px' src='http://lbs.tianditu.gov.cn/images/logo.png' width='101' height='49' title='天安门'/>" +
+                "<div style='margin:10px 0px 10px 120px;'>电话 : (010)88187700 <br>地址：北京市顺义区机场东路国门商务区地理信息产业园2号楼天地图大厦" +
+                "</div>" +
+                "<input  id='keyWord' value='机场' type='text' style='border: 1px solid #cccccc;width: 180px;height: 20px;line-height: 20px;padding-left: 10px;display: block;float: left;'>" +
+                "<input style='margin-left:195px;  width: 80px;height: 24px; text-align: center; background: #5596de;color: #FFF;border: none;display: block;cursor: pointer;' type='button' value='周边搜索'  onClick=\"localsearch.searchNearby(document.getElementById('keyWord').value,marker.getLngLat(),radius)\">" +
+                "</div>" +
+                "</div>";
+            infoWin1.setContent(sContent);
+            marker.addEventListener("click", function () {
+                marker.openInfoWindow(infoWin1);
+            });// 将标注添加到地图中
+
+        }
+
+        
+    </script>
+</head>
+<body onLoad="onLoad()">
+<div id="mapDiv"></div>
+<p>本示例演示如何在地图上添加复杂内容的信息窗口。</p>
+
+</body>
+</html>
