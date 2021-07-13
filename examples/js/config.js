@@ -6,8 +6,8 @@ var URL_CONFIG = {
 
 };
 
-// var url = 'http://36.134.74.189:8090/';//服务器地址 
-var url = 'http://localhost:8090/';//本地地址
+var url = 'http://36.134.74.189:8090/';//服务器地址 
+// var url = 'http://localhost:8090/';//本地地址
 
 //测试
 var cc = {

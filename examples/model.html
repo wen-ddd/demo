@@ -1,435 +1,559 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-	<title>三维模型</title>
-	<link href="../Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/pretty.css" rel="stylesheet">
-	<link rel="stylesheet" href="css/ss.css">
-	<script src="js/jquery.min.js"></script>
-	<script src="js/Bubble.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/bootstrap-select.min.js"></script>
-	<script src="js/config.js"></script>
-	<script type="text/javascript" src="../Build/Cesium/Cesium.js"></script>
-	<style type="text/css">
-		.cesium-viewer-bottom {
-			display: none;
-		}
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<title>三维模型</title>
+		<link href="../Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/pretty.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/ss.css">
+		<script src="js/jquery.min.js"></script>
+		<script src="js/Bubble.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/bootstrap-select.min.js"></script>
+		<script src="js/config.js"></script>
+		<script type="text/javascript" src="../Build/Cesium/Cesium.js"></script>
+		<style type="text/css">
+			.cesium-viewer-bottom {
+				display: none;
+			}
 
-		label {
-			width: auto;
-			display: inline-block;
-		}
-	</style>
-</head>
+			label {
+				width: auto;
+				display: inline-block;
+			}
+			a.leaflet-popup-close-button {
+			    position: absolute;
+			    top: 0;
+			    right: 0;
+			    padding: 4px 4px 0 0;
+			    border: none;
+			    text-align: center;
+			    width: 18px;
+			    height: 14px;
+			    font: 16px/14px Tahoma,Verdana,sans-serif;
+			    color: #c3c3c3;
+			    text-decoration: none;
+			    font-weight: 700;
+			    background: transparent;
+			}
+		</style>
+	</head>
 
-<body>
-	<div id="cesiumContainer"></div>
-	<div id="loadingbar" class="spinner">
-		<div class="spinner-container container1">
-			<div class="circle1"></div>
-			<div class="circle2"></div>
-			<div class="circle3"></div>
-			<div class="circle4"></div>
-		</div>
-		<div class="spinner-container container2">
-			<div class="circle1"></div>
-			<div class="circle2"></div>
-			<div class="circle3"></div>
-			<div class="circle4"></div>
-		</div>
-		<div class="spinner-container container3">
-			<div class="circle1"></div>
-			<div class="circle2"></div>
-			<div class="circle3"></div>
-			<div class="circle4"></div>
-		</div>
-	</div>
-
-	<blockquote id="bubble" class="bubble leaflet-popup-content-wrapper" style="width: 600px;height: 400px">
-		<div class="leaflet-popup-content" style="width: 551px;">
-			<div class="divMapInfoWindowContent" style="overflow-y: auto;overflow-x: hidden;margin-top:20px;">
-				<div class="divInfo">
-					<div class="popup-titleName"><span id="type"></span></div>
-					<div style="width:46%;"><label>用地编号：</label><span id="ydbh"></span> </div>
-					<div style="width:46%;"><label>用地性质代码：</label><span id="ydxzdm"></span> </div>
-					<div style="width:46%;"><label>用地性质名称：</label><span id="ydxzmc"></span> </div>
-					<div style="width:46%;"><label>土地使用兼容性：</label><span id="rjx"></span> </div>
-					<div style="width:46%;"><label>片区名称：</label><span id="pqmc"></span> </div>
-					<div style="width:46%;"><label>占地面积（亩）：</label><span id="zdmj"></span> </div>
-					<div style="width:46%;"><label>总建筑面积(104m2)：</label><span id="zjzmj"></span> </div>
-					<div style="width:46%;"><label>东向红线后退距离(m)：</label><span id="hxhtjld"></span> </div>
-					<div style="width:46%;"><label>南向红线后退距离(m)：</label><span id="hxhtjln"></span> </div>
-					<div style="width:46%;"><label>西向红线后退距离(m)：</label><span id="hxhtjlx"></span> </div>
-					<div style="width:46%;"><label>北向红线后退距离(m)：</label><span id="hxhtjlb"></span> </div>
-					<div style="width:46%;"><label>建筑性质：</label><span id="jzxz"></span> </div>
-					<div style="width:46%;"><label>容积率(%)：</label><span id="rjl"></span> </div>
-					<div style="width:46%;"><label>建筑系数(%)：</label><span id="jzxs"></span> </div>
-					<div style="width:46%;"><label>绿地率(%)：</label><span id="ldl"></span> </div>
-					<div style="width:46%;"><label>建筑限高(m)：</label><span id="jzxg"></span> </div>
-					<div style="width:46%;"><label>建筑间距(m)：</label><span id="jzjj"></span> </div>
-					<div style="width:46%;"><label>配建车位：</label><span id="pjcw"></span> </div>
-					<div style="width:46%;"><label>备注信息：</label><span id="bzxx"></span> </div>
-					<div style="width:46%;"><label>规划年度：</label><span id="ghnd"></span> </div>
-					<div style="width:46%;"><label>配套设施：</label><span id="ptss"></span> </div>
-					<div style="width:46%;"><label>开发建设时序：</label><span id="sfjqjs"></span> </div>
-				</div>
+	<body>
+		<div id="cesiumContainer"></div>
+		<div id="loadingbar" class="spinner">
+			<div class="spinner-container container1">
+				<div class="circle1"></div>
+				<div class="circle2"></div>
+				<div class="circle3"></div>
+				<div class="circle4"></div>
+			</div>
+			<div class="spinner-container container2">
+				<div class="circle1"></div>
+				<div class="circle2"></div>
+				<div class="circle3"></div>
+				<div class="circle4"></div>
+			</div>
+			<div class="spinner-container container3">
+				<div class="circle1"></div>
+				<div class="circle2"></div>
+				<div class="circle3"></div>
+				<div class="circle4"></div>
 			</div>
 		</div>
-	</blockquote>
-	<script>
-		function onload(Cesium) {
-			var infoboxContainer = document.getElementById("bubble");
-			var viewer = new Cesium.Viewer('cesiumContainer');
-			var scene = viewer.scene;
-			var camera = scene.camera;
-			viewer.customInfobox = infoboxContainer;
-			var bubble = new Bubble(scene, 'bubble');
-			var entity;
-			var model = {};
 
-			// 方法一，通过数据服务的形式添加单体化标识面
-			// (推荐使用)
+		<blockquote id="gh" class="bubble leaflet-popup-content-wrapper" style="width: 600px;height: 400px">
+			<div class="leaflet-popup-content" style="width: 551px;">
+				<div class="divMapInfoWindowContent" style="overflow-y: auto;overflow-x: hidden;margin-top:20px;">
+					<div class="divInfo">
+						<div class="popup-titleName"><span id="type1"></span></div>
+						<div style="width:46%;"><label>用地编号：</label><span id="ydbh1"></span> </div>
+						<div style="width:46%;"><label>用地性质代码：</label><span id="ydxzdm1"></span> </div>
+						<div style="width:46%;"><label>用地性质名称：</label><span id="ydxzmc1"></span> </div>
+						<div style="width:46%;"><label>土地使用兼容性：</label><span id="rjx1"></span> </div>
+						<div style="width:46%;"><label>片区名称：</label><span id="pqmc1"></span> </div>
+						<div style="width:46%;"><label>占地面积（亩）：</label><span id="zdmj1"></span> </div>
+						<div style="width:46%;"><label>总建筑面积(104m2)：</label><span id="zjzmj1"></span> </div>
+						<div style="width:46%;"><label>东向红线后退距离(m)：</label><span id="hxhtjld1"></span> </div>
+						<div style="width:46%;"><label>南向红线后退距离(m)：</label><span id="hxhtjln1"></span> </div>
+						<div style="width:46%;"><label>西向红线后退距离(m)：</label><span id="hxhtjlx1"></span> </div>
+						<div style="width:46%;"><label>北向红线后退距离(m)：</label><span id="hxhtjlb1"></span> </div>
+						<div style="width:46%;"><label>建筑性质：</label><span id="jzxz1"></span> </div>
+						<div style="width:46%;"><label>容积率(%)：</label><span id="rjl1"></span> </div>
+						<div style="width:46%;"><label>建筑系数(%)：</label><span id="jzxs1"></span> </div>
+						<div style="width:46%;"><label>绿地率(%)：</label><span id="ldl1"></span> </div>
+						<div style="width:46%;"><label>建筑限高(m)：</label><span id="jzxg1"></span> </div>
+						<div style="width:46%;"><label>建筑间距(m)：</label><span id="jzjj1"></span> </div>
+						<div style="width:46%;"><label>配建车位：</label><span id="pjcw1"></span> </div>
+						<div style="width:46%;"><label>备注信息：</label><span id="bzxx1"></span> </div>
+						<div style="width:46%;"><label>规划年度：</label><span id="ghnd1"></span> </div>
+						<div style="width:46%;"><label>配套设施：</label><span id="ptss1"></span> </div>
+						<div style="width:46%;"><label>开发建设时序：</label><span id="sfjqjs1"></span> </div>
+					</div>
+				</div>
+			</div>
+			<a class="leaflet-popup-close-button" href="javascript:close()">×</a>
+		</blockquote>
 
-			var type = getUrlParam('type');
+		<blockquote id="xz" class="bubble leaflet-popup-content-wrapper" style="width: 260px;height: 200px">
+			<div class="leaflet-popup-content" style="width: 251px;">
+				<div class="divMapInfoWindowContent" style="overflow-y: auto;overflow-x: hidden;margin-top:20px;">
+					<div class="divInfo">
+						<div class="popup-titleName"><span id="type"></span></div>
+						<div style="width:90%;"><label>用地性质代码：</label><span id="ydxzdm"></span> </div>
+						<div style="width:90%;"><label>用地性质名称：</label><span id="ydxzmc"></span> </div>
+						<div style="width:90%;"><label>占地面积（亩）：</label><span id="ydmj"></span> </div>
 
-			if (type === '1') {
-				model = swyy; //生物医药
-			} else if (type === '2') {
-				model = qlxcl; //麒麟新材料产业园
-			} else if (type === '3') {
-				model = caopu; //化工园区草铺片区
-			} else if (type === '4') {
+					</div>
+				</div>
+			</div>
+			<a class="leaflet-popup-close-button" href="javascript:close()">×</a>
+		</blockquote>
+		<script>
+			function onload(Cesium) {
+				var xzgh = getUrlParam('xzgh'); //
+				if($.isEmptyObject(xzgh)){
+					xzgh="xz";
+				}
+				var infoboxContainer = document.getElementById(xzgh);
+				var viewer = new Cesium.Viewer('cesiumContainer');
+				var scene = viewer.scene;
+				var camera = scene.camera;
+				viewer.customInfobox = infoboxContainer;
+				var bubble = new Bubble(scene, xzgh);
+				var entity;
+				var model = {};
 
-			} else if (type === '5') {
+				// 方法一，通过数据服务的形式添加单体化标识面
+				// (推荐使用)
 
-			} else if (type === '6') {
+				var type = getUrlParam('type');
 
-			} else if (type === '7') {
-				model = qinglong; //青龙片区
-			} else if (type === '8') {
-				model = cc; //测试
-			}
+				if (type === '1') {
+					model = swyy; //生物医药
+				} else if (type === '2') {
+					model = qlxcl; //麒麟新材料产业园
+				} else if (type === '3') {
+					model = caopu; //化工园区草铺片区
+				} else if (type === '4') {
+					model = caopu; //化工园区草铺片区
+				} else if (type === '5') {
+					model = yejin; //冶金
+				} else if (type === '6') {
+					model = lubiao; //化工园区禄裱片区
+				} else if (type === '7') {
+					model = qinglong; //青龙片区
+				} else if (type === '8') {
+					model = cc; //测试
+				}
 
-			// var dataServiceUrl =
-			// 	'http://localhost:8090/iserver/services/data-ql/rest/data/featureResults.rjson?returnContent=true'; // 数据服务URL
-			// var dataSourceName = 'ql'; // 数据源名称
-			// var dataSetName = 'New_Region'; // 数据集名称
-			// // 加载倾斜摄影图层
-			// var promise = scene.open('http://localhost:8090/iserver/services/3D-swyykjcyy/rest/realspace');
+				var dataServiceUrl1 =
+				'http://36.134.74.189:8090/iserver/services/data-test/rest/data/featureResults.rjson?returnContent=true'; // 数据服务URL
+				var dataSourceName1 = 'supper'; // 数据源名称
+				var dataSetName1 = 'an_tdsyxz'; // 数据集名称
+				if(xzgh=="gh"){
+					dataSetName1='an_ghdk';
+				}
+				// // 加载倾斜摄影图层
+				// var promise = scene.open('http://localhost:8090/iserver/services/3D-swyykjcyy/rest/realspace');
 
-			var dataServiceUrl = model.dataServiceUrl; // 数据服务URL
-			var dataSourceName = model.dataSourceName; // 数据源名称
-			var dataSetName = model.dataSetName; // 数据集名称
-			// 加载倾斜摄影图层
-			var promise = scene.open(model.promise);
+				var dataServiceUrl = model.dataServiceUrl; // 数据服务URL
+				var dataSourceName = model.dataSourceName; // 数据源名称
+				var dataSetName = model.dataSetName; // 数据集名称
+				// 加载倾斜摄影图层
+				var promise = scene.open(model.promise);
 
-			promise.then(function (obliqueLayers) {
+				promise.then(function(obliqueLayers) {
 
-				var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
-				handler.setInputAction(function (e) {
-					// 首先移除之前添加标识实体
+					var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+					handler.setInputAction(function(e) {
+						// 首先移除之前添加标识实体
+						viewer.entities.removeById('identify-area');
+						// 获取点击位置笛卡尔坐标
+						var position = scene.pickPosition(e.position);
+						// 从笛卡尔坐标获取经纬度
+						var cartographic = Cesium.Cartographic.fromCartesian(position);
+						var longitude = Cesium.Math.toDegrees(cartographic.longitude);
+						var latitude = Cesium.Math.toDegrees(cartographic.latitude);
+
+						var height = cartographic.height;
+
+						var queryPoint = { // 查询点对象
+							x: longitude,
+							y: latitude
+						};
+
+						viewerflyToLonLat(longitude, latitude, height);
+						queryByPoint(queryPoint, longitude, latitude, height);
+						// getData(384, longitude, latitude, height);
+
+					}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+					// 去除加载动画
+					// $('#toolbar').show();
+					$('#loadingbar').remove();
+
+					//获取url参数
+					var lon = getUrlParam('longitude'); //102.41728261094408
+					var lat = getUrlParam('latitude'); //24.92393519548676
+					var id = getUrlParam('id'); //地块id
+					if (!$.isEmptyObject(lon) && !$.isEmptyObject(lat)) {
+						lon = Number(lon);
+						lat = Number(lat);
+						var queryPoint = { // 查询点对象
+							x: lon,
+							y: lat
+						};
+						var hei = heightByPoint(queryPoint);
+						if (hei != 0) {
+							viewerflyToLonLat(lon, lat, hei);
+							// queryByPoint(queryPoint, lon, lat, hei);
+							if (!$.isEmptyObject(id)) {
+								id = Number(id);
+								getData(id, lon, lat, hei);
+							}
+
+						} else {
+							alert("瓦片数据不存在!");
+						}
+
+					}
+
+				});
+
+				window.close=function(){
+					
+					bubble.visibility(false);
 					viewer.entities.removeById('identify-area');
-					// 获取点击位置笛卡尔坐标
-					var position = scene.pickPosition(e.position);
-					// 从笛卡尔坐标获取经纬度
-					var cartographic = Cesium.Cartographic.fromCartesian(position);
-					var longitude = Cesium.Math.toDegrees(cartographic.longitude);
-					var latitude = Cesium.Math.toDegrees(cartographic.latitude);
+				}
+				
+				function getData(id, lo, la, he) {
 
-					var height = cartographic.height;
-
-					var queryPoint = { // 查询点对象
-						x: longitude,
-						y: latitude
-					};
-
-					viewerflyToLonLat(longitude, latitude, height);
-					//queryByPoint(queryPoint, longitude, latitude, height);
-					//getData(2231, longitude, latitude, height);
-
-				}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-
-				// 去除加载动画
-				// $('#toolbar').show();
-				$('#loadingbar').remove();
-
-				//获取url参数
-				var lon = getUrlParam('longitude'); //102.41728261094408
-				var lat = getUrlParam('latitude'); //24.92393519548676
-				var id = getUrlParam('id'); //地块id
-				if (!$.isEmptyObject(lon) && !$.isEmptyObject(lat)) {
-					lon = Number(lon);
-					lat = Number(lat);
-					var queryPoint = { // 查询点对象
-						x: lon,
-						y: lat
-					};
-					var hei = heightByPoint(queryPoint);
-					if (hei != 0) {
-						viewerflyToLonLat(lon, lat, hei);
-						// queryByPoint(queryPoint, lon, lat, hei);
-						if (!$.isEmptyObject(id)) {
-							id = Number(id);
-							getData(id, lon, lat, hei);
-						}
-
+					//get请求
+					var xmlhttp = new XMLHttpRequest();
+					// get方法带参数是将参数写在url里面传过去给后端
+					if (xzgh === 'xz') {
+						xmlhttp.open("GET", "http://116.54.19.28:81/api/gateway/smoke_test/test/an_tdsyxz?id=" + id + "", true);
+						xmlhttp.setRequestHeader("API-TOKEN", "99AE0425E3FAB94A48AC358BB63CEE72");
 					} else {
-						alert("瓦片数据不存在!");
+						xmlhttp.open("GET", "http://116.54.19.28:81/api/gateway/smoke_test/test/an_ghdk?id=" + id + "", true);
+						xmlhttp.setRequestHeader("API-TOKEN", "F490F206BD61EDC4AE4E97BC78D8C5EB");
+					}
+
+					xmlhttp.send();
+					// readyState == 4 为请求完成，status == 200为请求返回的状态
+					xmlhttp.onreadystatechange = function() {
+						if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+							var bubbleposition = new Cesium.Cartesian3.fromDegrees(lo, la, he);
+							var data = JSON.parse(xmlhttp.responseText);
+
+							data = data.data[0];
+							console.log(data);
+
+							// var ts="113.059131271684 28.7883833429491 113.059131271684 28.7882816339505 113.059366709181 28.7882703329506 113.059376126681 28.7883607409494 113.059131271684 28.7883833429491";
+							if (data.geom != undefined) {
+								lonLatArr = addFeature(data.geom);
+							}
+
+							if (xzgh === 'xz') {
+								var type = document.getElementById('type');
+								type.innerHTML = data.ydxzmc;
+								var ydxzdm = document.getElementById('ydxzdm');
+								ydxzdm.innerHTML = data.ydxzdm;
+								var ydxzmc = document.getElementById('ydxzmc');
+								ydxzmc.innerHTML = data.ydxzmc;
+								var ydmj = document.getElementById('ydmj');
+								ydmj.innerHTML = data.ydmj;
+							} else {
+								var type = document.getElementById('type1');
+								type.innerHTML = data.ydxzdm;
+								var tdbh = document.getElementById('ydbh1');
+								tdbh.innerHTML = data.dkbh;
+								var ydxzdm = document.getElementById('ydxzdm1');
+								ydxzdm.innerHTML = data.ydxzdm;
+								var ydxzmc = document.getElementById('ydxzmc1');
+								ydxzmc.innerHTML = data.ydxzmc;
+								var rjx = document.getElementById('rjx1');
+								rjx.innerHTML = data.rjx;
+								var pqmc = document.getElementById('pqmc1');
+								pqmc.innerHTML = data.pqmc;
+								var zdmj = document.getElementById('zdmj1');
+								zdmj.innerHTML = data.zdmj;
+								var zjzmj = document.getElementById('zjzmj1');
+								zjzmj.innerHTML = data.zjzmj;
+								var hxhtjld = document.getElementById('hxhtjld1');
+								hxhtjld.innerHTML = data.hxhtjld;
+								var hxhtjln = document.getElementById('hxhtjln1');
+								hxhtjln.innerHTML = data.hxhtjln;
+								var hxhtjlx = document.getElementById('hxhtjlx1');
+								hxhtjlx.innerHTML = data.hxhtjlx;
+								var hxhtjlb = document.getElementById('hxhtjlb1');
+								hxhtjlb.innerHTML = data.hxhtjlb;
+								var jzxz = document.getElementById('jzxz1');
+								jzxz.innerHTML = data.jzxz;
+								var rjl = document.getElementById('rjl1');
+								rjl.innerHTML = data.rjl;
+								var jzxs = document.getElementById('jzxs1');
+								jzxs.innerHTML = data.jzxs;
+								var ldl = document.getElementById('ldl1');
+								ldl.innerHTML = data.ldl;
+								var jzxg = document.getElementById('jzxg1');
+								jzxg.innerHTML = data.jzxg;
+								var jzjj = document.getElementById('jzjj1');
+								jzjj.innerHTML = data.jzjj;
+								var pjcw = document.getElementById('pjcw1');
+								pjcw.innerHTML = data.pjcw;
+								var bzxx = document.getElementById('bzxx1');
+								bzxx.innerHTML = data.bzxx;
+								var ghnd = document.getElementById('ghnd1');
+								ghnd.innerHTML = data.ghnd;
+								var ptss = document.getElementById('ptss1');
+								ptss.innerHTML = data.ptss;
+								var sfjqjs = document.getElementById('sfjqjs1');
+								sfjqjs.innerHTML = data.sfjqjs;
+
+							}
+
+							bubble.showAt(bubbleposition);
+						}
 					}
 
 				}
 
-			});
 
-			function getData(id, lo, la, he) {
+				function addFeature(str) {
 
-				//get请求
-				var xmlhttp = new XMLHttpRequest();
-				// get方法带参数是将参数写在url里面传过去给后端
-				xmlhttp.open("GET", "http://116.54.19.28:81/api/gateway/smoke_test/test/an_ghdk?id=" + id + "", true);
-				xmlhttp.setRequestHeader("API-TOKEN", "F490F206BD61EDC4AE4E97BC78D8C5EB");
-				xmlhttp.send();
-				// readyState == 4 为请求完成，status == 200为请求返回的状态
-				xmlhttp.onreadystatechange = function () {
-					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-						var bubbleposition = new Cesium.Cartesian3.fromDegrees(lo, la, he);
-						var data = JSON.parse(xmlhttp.responseText);
+					str = str.substring(15, str.length - 3);
+					var str1 = str.replace(/ /g, ',');
+					console.log(str);
+					console.log(str1);
+					var lonLatArr = str1.split(',');
+					lonLatArr = lonLatArr.map(Number);
+					console.log(lonLatArr);
 
-						data = data.data[0];
-						console.log(data);
+					viewer.entities.add({
+						id: 'identify-area',
+						name: '单体化标识面',
+						polygon: {
+							hierarchy: Cesium.Cartesian3.fromDegreesArray(lonLatArr),
+							material: new Cesium.Color(1.0, 0.0, 0.0, 0.3),
+						},
+						classificationType: Cesium.ClassificationType.S3M_TILE // 贴在S3M模型表面
+					});
+				}
 
-						// var ts="113.059131271684 28.7883833429491 113.059131271684 28.7882816339505 113.059366709181 28.7882703329506 113.059376126681 28.7883607409494 113.059131271684 28.7883833429491";
-						if (data.geom != undefined) {
-							lonLatArr = addFeature(data.geom);
+				// 通过点击查询用于表示单体化的面要素，添加到场景中高亮显示。
+				function queryByPoint(queryPoint, lo, la, he) {
+					var queryObj = {
+						"getFeatureMode": "SPATIAL",
+						"spatialQueryMode": "INTERSECT",
+						"datasetNames": [dataSourceName1 + ":" + dataSetName1],
+						"geometry": {
+							id: 0,
+							parts: [1],
+							points: [queryPoint],
+							type: "POINT"
 						}
+					};
 
-						var type = document.getElementById('type');
-						type.innerHTML = data.ydxzdm;
-						var ydbh = document.getElementById('ydbh');
-						ydbh.innerHTML = data.dkbh;
-						var ydxzdm = document.getElementById('ydxzdm');
-						ydxzdm.innerHTML = data.ydxzdm;
-						var ydxzmc = document.getElementById('ydxzmc');
-						ydxzmc.innerHTML = data.ydxzmc;
-						var rjx = document.getElementById('rjx');
-						rjx.innerHTML = data.rjx;
-						var pqmc = document.getElementById('pqmc');
-						pqmc.innerHTML = data.pqmc;
-						var zdmj = document.getElementById('zdmj');
-						zdmj.innerHTML = data.zdmj;
-						var zjzmj = document.getElementById('zjzmj');
-						zjzmj.innerHTML = data.zjzmj;
-						var hxhtjld = document.getElementById('hxhtjld');
-						hxhtjld.innerHTML = data.hxhtjld;
-						var hxhtjln = document.getElementById('hxhtjln');
-						hxhtjln.innerHTML = data.hxhtjln;
-						var hxhtjlx = document.getElementById('hxhtjlx');
-						hxhtjlx.innerHTML = data.hxhtjlx;
-						var hxhtjlb = document.getElementById('hxhtjlb');
-						hxhtjlb.innerHTML = data.hxhtjlb;
-						var jzxz = document.getElementById('jzxz');
-						jzxz.innerHTML = data.jzxz;
-						var rjl = document.getElementById('rjl');
-						rjl.innerHTML = data.rjl;
-						var jzxs = document.getElementById('jzxs');
-						jzxs.innerHTML = data.jzxs;
-						var ldl = document.getElementById('ldl');
-						ldl.innerHTML = data.ldl;
-						var jzxg = document.getElementById('jzxg');
-						jzxg.innerHTML = data.jzxg;
-						var jzjj = document.getElementById('jzjj');
-						jzjj.innerHTML = data.jzjj;
-						var pjcw = document.getElementById('pjcw');
-						pjcw.innerHTML = data.pjcw;
-						var bzxx = document.getElementById('bzxx');
-						bzxx.innerHTML = data.bzxx;
-						var ghnd = document.getElementById('ghnd');
-						ghnd.innerHTML = data.ghnd;
-						var ptss = document.getElementById('ptss');
-						ptss.innerHTML = data.ptss;
-						var sfjqjs = document.getElementById('sfjqjs');
-						sfjqjs.innerHTML = data.sfjqjs;
-						bubble.showAt(bubbleposition);
-					}
+					queryObjJSON = JSON.stringify(queryObj); // 转化为JSON字符串作为查询参数
+
+					$.ajax({
+						type: "post",
+						url: dataServiceUrl1,
+						data: queryObjJSON,
+						success: function(result) {
+							var resultObj = JSON.parse(result);
+							if (resultObj.featureCount > 0) {
+								addClapFeature(resultObj.features[0]);
+								console.log(resultObj)
+							}
+							if (resultObj.features[0] != undefined) {
+								var bubbleposition = new Cesium.Cartesian3.fromDegrees(lo, la, he);
+								// var type = document.getElementById('type');
+								// type.innerHTML = resultObj.features[0].fieldValues[10];
+								// var code = document.getElementById('code');
+								// code.innerHTML = resultObj.features[0].fieldValues[11];
+								// var name = document.getElementById('name');
+								// name.innerHTML = resultObj.features[0].fieldValues[12];
+								// var area = document.getElementById('area');
+								// area.innerHTML = resultObj.features[0].fieldValues[13];
+								
+								if (xzgh === 'xz') {
+									var type = document.getElementById('type');
+									type.innerHTML = resultObj.features[0].fieldValues[19];
+									var ydxzdm = document.getElementById('ydxzdm');
+									ydxzdm.innerHTML = resultObj.features[0].fieldValues[18];
+									var ydxzmc = document.getElementById('ydxzmc');
+									ydxzmc.innerHTML = resultObj.features[0].fieldValues[19];
+									var ydmj = document.getElementById('ydmj');
+									ydmj.innerHTML = resultObj.features[0].fieldValues[20];
+								} else {
+									var type = document.getElementById('type1');
+									type.innerHTML = resultObj.features[0].fieldValues[15];
+									var tdbh = document.getElementById('ydbh1');
+									tdbh.innerHTML = resultObj.features[0].fieldValues[13];
+									var ydxzdm = document.getElementById('ydxzdm1');
+									ydxzdm.innerHTML = resultObj.features[0].fieldValues[15];
+									var ydxzmc = document.getElementById('ydxzmc1');
+									ydxzmc.innerHTML = resultObj.features[0].fieldValues[16];
+									var rjx = document.getElementById('rjx1');
+									rjx.innerHTML = resultObj.features[0].fieldValues[37];
+									var pqmc = document.getElementById('pqmc1');
+									pqmc.innerHTML = resultObj.features[0].fieldValues[17];
+									var zdmj = document.getElementById('zdmj1');
+									zdmj.innerHTML = resultObj.features[0].fieldValues[34];
+									var zjzmj = document.getElementById('zjzmj1');
+									zjzmj.innerHTML = resultObj.features[0].fieldValues[35];
+									var hxhtjld = document.getElementById('hxhtjld1');
+									hxhtjld.innerHTML = resultObj.features[0].fieldValues[31];
+									var hxhtjln = document.getElementById('hxhtjln1');
+									hxhtjln.innerHTML = resultObj.features[0].fieldValues[32];
+									var hxhtjlx = document.getElementById('hxhtjlx1');
+									hxhtjlx.innerHTML = resultObj.features[0].fieldValues[33];
+									var hxhtjlb = document.getElementById('hxhtjlb1');
+									hxhtjlb.innerHTML = resultObj.features[0].fieldValues[30];
+									var jzxz = document.getElementById('jzxz1');
+									jzxz.innerHTML = resultObj.features[0].fieldValues[20];
+									var rjl = document.getElementById('rjl1');
+									rjl.innerHTML = resultObj.features[0].fieldValues[21];
+									var jzxs = document.getElementById('jzxs1');
+									jzxs.innerHTML = resultObj.features[0].fieldValues[22];
+									var ldl = document.getElementById('ldl1');
+									ldl.innerHTML = resultObj.features[0].fieldValues[23];
+									var jzxg = document.getElementById('jzxg1');
+									jzxg.innerHTML = resultObj.features[0].fieldValues[24];
+									var jzjj = document.getElementById('jzjj1');
+									jzjj.innerHTML = resultObj.features[0].fieldValues[25];
+									var pjcw = document.getElementById('pjcw1');
+									pjcw.innerHTML = resultObj.features[0].fieldValues[26];
+									var bzxx = document.getElementById('bzxx1');
+									bzxx.innerHTML = resultObj.features[0].fieldValues[28];
+									var ghnd = document.getElementById('ghnd1');
+									ghnd.innerHTML = resultObj.features[0].fieldValues[29];
+									var ptss = document.getElementById('ptss1');
+									ptss.innerHTML = resultObj.features[0].fieldValues[36];
+									var sfjqjs = document.getElementById('sfjqjs1');
+									sfjqjs.innerHTML = resultObj.features[0].fieldValues[27];
+								
+								}
+								
+								bubble.showAt(bubbleposition);
+
+							} else if (resultObj.features[0] == undefined) {
+								bubble.visibility(false);
+							}
+						},
+						error: function(msg) {
+							console.log(msg);
+						}
+					})
+				}
+
+				//三维空间分析 用于查询高度
+				function heightByPoint(point) {
+					var z = 0;
+					var queryobj = {
+						"geometries": [{
+							"type": "POINT3D",
+							"x": point.x,
+							"y": point.y,
+							"z": 0
+						}],
+						"sceneName": model.sceneName, //三维场景
+						"layerName": model.layerName, //三维图层
+						"interpolationDistance": 0
+					};
+
+					$.ajaxSettings.async = false;
+					let queryobjJSON = JSON.stringify(queryobj); //转化为JsoN字符串作为查询参数 
+					$.ajax({
+						type: "post",
+						url: model.restjsr,
+						data: queryobjJSON,
+						success: function(result) {
+							var res = JSON.parse(result);
+							if (res.geometries[0] != null) {
+
+								z = res.geometries[0].position.z;
+							}
+
+							console.log(res);
+
+						}
+					})
+					return z;
+
+				}
+
+				// 将数据服务查询到的要素添加到场景中高亮显示，表示选中效果。
+				function addClapFeature(feature) {
+					var lonLatArr = getLonLatArray(feature.geometry.points);
+					viewer.entities.add({
+						id: 'identify-area',
+						name: '单体化标识面',
+						polygon: {
+							hierarchy: Cesium.Cartesian3.fromDegreesArray(lonLatArr),
+							material: new Cesium.Color(1.0, 0.0, 0.0, 0.3),
+						},
+						classificationType: Cesium.ClassificationType.S3M_TILE // 贴在S3M模型表面
+					});
+				}
+
+				// 得到[经度,纬度,经度,纬度...]形式的数组，用于构造面。
+				function getLonLatArray(points) {
+					var point3D = [];
+					points.forEach(function(point) {
+						point3D.push(point.x);
+						point3D.push(point.y);
+					});
+					return point3D;
+				}
+
+				function viewerflyToLonLat(lon, lat, he) {
+					if (entity)
+						viewer.entities.remove(entity);
+					entity = new Cesium.Entity({
+						id: 'flyTmp',
+						position: Cesium.Cartesian3.fromDegrees(lon, lat, he),
+						point: {
+							pixelSize: 30,
+							color: Cesium.Color.WHITE.withAlpha(0.9),
+							outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
+							outlineWidth: 1
+						}
+					});
+					viewer.entities.add(entity);
+					viewer.flyTo(entity, {
+						offset: {
+							heading: Cesium.Math.toRadians(0.0),
+							pitch: Cesium.Math.toRadians(-60),
+							range: he / 2
+						}
+					});
 				}
 
 			}
-
-
-			function addFeature(str) {
-
-				str = str.substring(15, str.length - 3);
-				var str1 = str.replace(/ /g, ',');
-				console.log(str);
-				console.log(str1);
-				var lonLatArr = str1.split(',');
-				lonLatArr = lonLatArr.map(Number);
-				console.log(lonLatArr);
-
-				viewer.entities.add({
-					id: 'identify-area',
-					name: '单体化标识面',
-					polygon: {
-						hierarchy: Cesium.Cartesian3.fromDegreesArray(lonLatArr),
-						material: new Cesium.Color(1.0, 0.0, 0.0, 0.3),
-					},
-					classificationType: Cesium.ClassificationType.S3M_TILE // 贴在S3M模型表面
-				});
+			if (typeof Cesium !== 'undefined') {
+				window.startupCalled = true;
+				onload(Cesium);
 			}
 
-			// 通过点击查询用于表示单体化的面要素，添加到场景中高亮显示。
-			function queryByPoint(queryPoint, lo, la, he) {
-				var queryObj = {
-					"getFeatureMode": "SPATIAL",
-					"spatialQueryMode": "INTERSECT",
-					"datasetNames": [dataSourceName + ":" + dataSetName],
-					"geometry": {
-						id: 0,
-						parts: [1],
-						points: [queryPoint],
-						type: "POINT"
-					}
-				};
+			
+			function getUrlParam(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+				var r = window.location.search.substr(1).match(reg); //匹配目标参数
+				if (r != null)
+					return unescape(r[2]);
 
-				queryObjJSON = JSON.stringify(queryObj); // 转化为JSON字符串作为查询参数
-
-				$.ajax({
-					type: "post",
-					url: dataServiceUrl,
-					data: queryObjJSON,
-					success: function (result) {
-						var resultObj = JSON.parse(result);
-						if (resultObj.featureCount > 0) {
-							addClapFeature(resultObj.features[0]);
-							console.log(resultObj)
-						}
-						if (resultObj.features[0] != undefined) {
-							// var bubbleposition = new Cesium.Cartesian3.fromDegrees(lo, la, he);
-							// var type = document.getElementById('type');
-							// type.innerHTML = resultObj.features[0].fieldValues[10];
-							// var code = document.getElementById('code');
-							// code.innerHTML = resultObj.features[0].fieldValues[11];
-							// var name = document.getElementById('name');
-							// name.innerHTML = resultObj.features[0].fieldValues[12];
-							// var area = document.getElementById('area');
-							// area.innerHTML = resultObj.features[0].fieldValues[13];
-							// bubble.showAt(bubbleposition);
-
-						} else if (resultObj.features[0] == undefined) {
-							bubble.visibility(false);
-						}
-					},
-					error: function (msg) {
-						console.log(msg);
-					}
-				})
+				return null; //返回参数值
 			}
-
-			//三维空间分析 用于查询高度
-			function heightByPoint(point) {
-				var z = 0;
-				var queryobj = {
-					"geometries": [{
-						"type": "POINT3D",
-						"x": point.x,
-						"y": point.y,
-						"z": 0
-					}],
-					"sceneName": model.sceneName, //三维场景
-					"layerName": model.layerName, //三维图层
-					"interpolationDistance": 0
-				};
-
-				$.ajaxSettings.async = false;
-				let queryobjJSON = JSON.stringify(queryobj); //转化为JsoN字符串作为查询参数 
-				$.ajax({
-					type: "post",
-					url: model.restjsr,
-					data: queryobjJSON,
-					success: function (result) {
-						var res = JSON.parse(result);
-						if (res.geometries[0] != null) {
-
-							z = res.geometries[0].position.z;
-						}
-
-						console.log(res);
-
-					}
-				})
-				return z;
-
-			}
-
-			// 将数据服务查询到的要素添加到场景中高亮显示，表示选中效果。
-			function addClapFeature(feature) {
-				var lonLatArr = getLonLatArray(feature.geometry.points);
-				viewer.entities.add({
-					id: 'identify-area',
-					name: '单体化标识面',
-					polygon: {
-						hierarchy: Cesium.Cartesian3.fromDegreesArray(lonLatArr),
-						material: new Cesium.Color(1.0, 0.0, 0.0, 0.3),
-					},
-					classificationType: Cesium.ClassificationType.S3M_TILE // 贴在S3M模型表面
-				});
-			}
-
-			// 得到[经度,纬度,经度,纬度...]形式的数组，用于构造面。
-			function getLonLatArray(points) {
-				var point3D = [];
-				points.forEach(function (point) {
-					point3D.push(point.x);
-					point3D.push(point.y);
-				});
-				return point3D;
-			}
-
-			function viewerflyToLonLat(lon, lat, he) {
-				if (entity)
-					viewer.entities.remove(entity);
-				entity = new Cesium.Entity({
-					id: 'flyTmp',
-					position: Cesium.Cartesian3.fromDegrees(lon, lat, he),
-					point: {
-						pixelSize: 30,
-						color: Cesium.Color.WHITE.withAlpha(0.9),
-						outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
-						outlineWidth: 1
-					}
-				});
-				viewer.entities.add(entity);
-				viewer.flyTo(entity, {
-					offset: {
-						heading: Cesium.Math.toRadians(0.0),
-						pitch: Cesium.Math.toRadians(-60),
-						range: he / 2
-					}
-				});
-			}
-
-		}
-		if (typeof Cesium !== 'undefined') {
-			window.startupCalled = true;
-			onload(Cesium);
-		}
-
-		function getUrlParam(name) {
-			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-			var r = window.location.search.substr(1).match(reg); //匹配目标参数
-			if (r != null)
-				return unescape(r[2]);
-
-			return null; //返回参数值
-		}
-	</script>
-</body>
+		</script>
+	</body>
 
 </html>
