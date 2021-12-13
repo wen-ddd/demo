@@ -6,8 +6,8 @@ var URL_CONFIG = {
 
 };
 
-//var url = 'http://36.147.6.60:8090/';//服务器地址
-var url = 'http://localhost:8090/';//本地地址
+var url = 'http://36.147.6.60:8090/';//服务器地址
+// var url = 'http://localhost:8090/';//本地地址
 
 var dataServiceUrl1 =url+
 				'iserver/services/data-data/rest/data/featureResults.rjson?returnContent=true'; // 数据服务URL
